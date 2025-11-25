@@ -9,7 +9,6 @@
 <head>
   <?php include("head.php"); ?>
   <link rel="stylesheet" href="<?php echo ruta ?>app/css/geofal-redesign.css">
-  <script src="<?php echo ruta ?>app/js/verificar-layout.js"></script>
 </head>
 
 <body>
@@ -20,39 +19,40 @@
     <!-- Header-->
     <?php include("header_top.php"); ?>
 
-    <!-- Breadcrumbs / Page Header -->
-    <div class="breadcrumbs">
-      <div class="col-sm-12">
-        <h1>EMPRESAS GEOFAL</h1>
-      </div>
-    </div>
-
-    <!-- Search and Add Section - Basado en imágenes intranetdesing -->
-    <div class="search-add-section">
+    <!-- Header Section - Título, Botón y Búsqueda en una línea -->
+    <div class="clientes-header-section">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="search-add-container">
-              <!-- Barra de búsqueda -->
-              <form action="<?= ruta ?>" method="get" class="search-form">
-                <input type="hidden" name="pagina" value="<?php echo $_GET['pagina'] ?>">
-                <input type="hidden" name="p" value="1">
-                <div class="input-group-search">
-                  <?php if (!empty($_GET['b']) and isset($_GET['b'])): ?>
-                    <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>" class="btn btn-outline-secondary btn-todos">Todos</a>
-                  <?php endif; ?>
-                  <input type="text" class="form-control-search" name="b" placeholder="Buscar Empresa" value="<?php echo $get_b2 ?>">
-                  <button class="btn btn-search" type="submit">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </div>
-              </form>
+            <div class="clientes-header-container">
+              <!-- Título de la Página - IZQUIERDA -->
+              <div class="page-title-button">
+                <h1 class="page-title-h1">EMPRESAS GEOFAL</h1>
+              </div>
               
-              <!-- Botón Agregar -->
-              <div class="add-button-container">
-                <a href="<?= ruta ?>?pagina=clientes_agregar" class="btn-geofal-primary btn-add-empresa">
-                  <i class="fa fa-plus"></i> Agregar Nueva Empresa
-                </a>
+              <!-- Botón y Búsqueda agrupados a la DERECHA -->
+              <div class="clientes-header-actions">
+                <!-- Botón Agregar -->
+                <div class="add-button-container">
+                  <a href="<?= ruta ?>?pagina=clientes_agregar" class="btn-geofal-primary btn-add-empresa">
+                    <i class="fa fa-plus"></i> Agregar Nueva Empresa
+                  </a>
+                </div>
+                
+                <!-- Barra de búsqueda -->
+                <form action="<?= ruta ?>" method="get" class="search-form">
+                  <input type="hidden" name="pagina" value="<?php echo $_GET['pagina'] ?>">
+                  <input type="hidden" name="p" value="1">
+                  <div class="input-group-search">
+                    <?php if (!empty($_GET['b']) and isset($_GET['b'])): ?>
+                      <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>" class="btn btn-outline-secondary btn-todos">Todos</a>
+                    <?php endif; ?>
+                    <input type="text" class="form-control-search" name="b" placeholder="Buscar Empresa" value="<?php echo $get_b2 ?>">
+                    <button class="btn btn-search" type="submit">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -74,24 +74,32 @@
                 <table class="table table-empresas-geofal">
                   <thead>
                     <tr>
+                      <th>Ruc</th>
                       <th>Clave</th>
                       <th>Razón social</th>
-                      <th>Teléfono</th>
-                      <th>Dirección</th>
                       <th>Representante</th>
-                      <th>Acciones</th>
+                      <th>PDF</th>
+                      <th>Acción</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php foreach ($mostrar_clientes_pagi as $m_clientes): ?>
                       <tr id="eli<?php echo $m_clientes['id'] ?>">
-                        <td>
-                          <span class="text-geofal-orange"><?php echo htmlspecialchars($m_clientes['clave']) ?></span>
-                        </td>
+                        <!-- Columna Ruc -->
+                        <td><?php echo htmlspecialchars($m_clientes['ruc'] ?? '') ?></td>
+                        <!-- Columna Clave -->
+                        <td><?php echo htmlspecialchars($m_clientes['clave']) ?></td>
+                        <!-- Columna Razón social -->
                         <td><?php echo htmlspecialchars($m_clientes['razon_social']) ?></td>
-                        <td><?php echo htmlspecialchars($m_clientes['telefono'] ?? '') ?></td>
-                        <td><?php echo htmlspecialchars($m_clientes['direccion'] ?? '') ?></td>
+                        <!-- Columna Representante -->
                         <td><?php echo htmlspecialchars($m_clientes['representante']) ?></td>
+                        <!-- Columna PDF -->
+                        <td>
+                          <a href="<?= ruta ?>?pagina=pdf&id=<?php echo $m_clientes['id'] ?>" class="btn btn-agregar-pdf-tabla" title="Gestionar PDFs">
+                            Agregar PDF
+                          </a>
+                        </td>
+                        <!-- Columna Acción (al final) -->
                         <td>
                           <div class="btn-group-actions">
                             <a href="<?= ruta ?>?pagina=clientes_editar&id=<?php echo $m_clientes['id'] ?>" class="btn btn-outline-primary btn-sm" title="Editar">
@@ -99,9 +107,6 @@
                             </a>
                             <a href="#" onclick="eliminar_todo('<?php echo ruta ?>?pagina=clientes','<?php echo $m_clientes['id'] ?>','eliminar_clientes')" class="btn btn-danger btn-sm" title="Eliminar">
                               <i class="fa fa-trash-o"></i>
-                            </a>
-                            <a href="<?= ruta ?>?pagina=pdf&id=<?php echo $m_clientes['id'] ?>" class="btn btn-success btn-sm" title="Gestionar PDFs">
-                              <i class="fa fa-file-pdf-o"></i> PDFs
                             </a>
                           </div>
                         </td>
@@ -122,5 +127,37 @@
   </div>
 
   <?php include("footer.php"); ?>
+  
+  <script>
+    // Mostrar notificaciones de éxito
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const success = urlParams.get('success');
+      
+      if (success === 'cliente_agregado') {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'La empresa se ha creado correctamente',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+        // Limpiar parámetro de la URL
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/[?&]success=[^&]+/, '').replace(/^&/, '?'));
+      } else if (success === 'cliente_editado') {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'La empresa se ha actualizado correctamente',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/[?&]success=[^&]+/, '').replace(/^&/, '?'));
+      }
+    });
+  </script>
 </body>
 </html>
+

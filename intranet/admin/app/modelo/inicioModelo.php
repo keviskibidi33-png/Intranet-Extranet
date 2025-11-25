@@ -34,16 +34,49 @@ class Inicio extends Conectar
 
   public function for_pdf_agregar()
   {
-    if (!empty($_FILES['img1']['name']) and isset($_FILES['img1']['name'])) {
-      $extension1 = pathinfo($_FILES['img1']['name'], PATHINFO_EXTENSION);
-      $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
-      $img1 = $ran1 . '.' . $extension1;
-      move_uploaded_file($_FILES['img1']['tmp_name'], '../publico/img_data/' . $img1);
-    } else {
-      header('Location:' . ruta . '?pagina=pdf_agregar&id=' . $_POST['id']);
+    // Validar que se haya enviado un archivo
+    if (empty($_FILES['img1']['name']) || !isset($_FILES['img1']['name']) || $_FILES['img1']['error'] !== UPLOAD_ERR_OK) {
+      header('Location:' . ruta . '?pagina=pdf_agregar&id=' . $_POST['id'] . '&error=1');
       exit;
     }
 
+    // Validar que sea un PDF
+    $extension1 = strtolower(pathinfo($_FILES['img1']['name'], PATHINFO_EXTENSION));
+    if ($extension1 !== 'pdf') {
+      header('Location:' . ruta . '?pagina=pdf_agregar&id=' . $_POST['id'] . '&error=2');
+      exit;
+    }
+
+    // Validar tamaño (10MB máximo)
+    if ($_FILES['img1']['size'] > 10 * 1024 * 1024) {
+      header('Location:' . ruta . '?pagina=pdf_agregar&id=' . $_POST['id'] . '&error=3');
+      exit;
+    }
+
+    // Generar nombre único para el archivo
+    $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
+    $img1 = $ran1 . '.' . $extension1;
+    
+    // Ruta de destino - Guardar en intranet/publico/img_data/ (como en producción)
+    // Usar ruta absoluta basada en __DIR__ para asegurar que se guarde en el lugar correcto
+    // __DIR__ = intranet/admin/app/modelo/
+    // Necesitamos: intranet/publico/img_data/
+    $base_dir = dirname(dirname(dirname(__DIR__))); // Sube 3 niveles: intranet/
+    $destino = $base_dir . '/publico/img_data/' . $img1;
+    
+    // Crear directorio si no existe
+    $dir_destino = $base_dir . '/publico/img_data/';
+    if (!is_dir($dir_destino)) {
+      mkdir($dir_destino, 0755, true);
+    }
+
+    // Mover archivo
+    if (!move_uploaded_file($_FILES['img1']['tmp_name'], $destino)) {
+      header('Location:' . ruta . '?pagina=pdf_agregar&id=' . $_POST['id'] . '&error=4');
+      exit;
+    }
+
+    // Insertar en base de datos
     $stmt = $this->datab
       ->prepare("insert into pdf (pdf,id_user,titulo,vista,estado) values(?,?,?,?,?)");
     $stmt->bindParam(1, $img1);
@@ -54,7 +87,9 @@ class Inicio extends Conectar
     $stmt->bindParam(4, $vista);
     $stmt->bindParam(5, $estado);
     $stmt->execute();
-    header('Location:' . ruta . '?pagina=pdf&id=' . $_POST['id']);
+    
+    // Redirigir con mensaje de éxito
+    header('Location:' . ruta . '?pagina=pdf&id=' . $_POST['id'] . '&success=pdf_agregado');
     exit;
   }
 
@@ -64,12 +99,45 @@ class Inicio extends Conectar
       "select * from pdf where id ='" . $_POST['id'] . "'"
     );
    
-    if (!empty($_FILES['img1']['name']) and isset($_FILES['img1']['name'])) {
-      $extension1 = pathinfo($_FILES['img1']['name'], PATHINFO_EXTENSION);
+    // Si se envía un nuevo archivo, procesarlo
+    if (!empty($_FILES['img1']['name']) && isset($_FILES['img1']['name']) && $_FILES['img1']['error'] === UPLOAD_ERR_OK) {
+      // Validar que sea un PDF
+      $extension1 = strtolower(pathinfo($_FILES['img1']['name'], PATHINFO_EXTENSION));
+      if ($extension1 !== 'pdf') {
+        header('Location:' . ruta . '?pagina=pdf_editar&id=' . $_POST['id'] . '&error=2');
+        exit;
+      }
+
+      // Validar tamaño (10MB máximo)
+      if ($_FILES['img1']['size'] > 10 * 1024 * 1024) {
+        header('Location:' . ruta . '?pagina=pdf_editar&id=' . $_POST['id'] . '&error=3');
+        exit;
+      }
+
+      // Generar nombre único para el archivo
       $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
       $img1 = $ran1 . '.' . $extension1;
-      move_uploaded_file($_FILES['img1']['tmp_name'], '../publico/img_data/' . $img1);
+      
+      // Ruta de destino - Guardar en intranet/publico/img_data/ (como en producción)
+      // Usar ruta absoluta basada en __DIR__ para asegurar que se guarde en el lugar correcto
+      // __DIR__ = intranet/admin/app/modelo/
+      // Necesitamos: intranet/publico/img_data/
+      $base_dir = dirname(dirname(dirname(__DIR__))); // Sube 3 niveles: intranet/
+      $destino = $base_dir . '/publico/img_data/' . $img1;
+      
+      // Crear directorio si no existe
+      $dir_destino = $base_dir . '/publico/img_data/';
+      if (!is_dir($dir_destino)) {
+        mkdir($dir_destino, 0755, true);
+      }
+
+      // Mover archivo
+      if (!move_uploaded_file($_FILES['img1']['tmp_name'], $destino)) {
+        header('Location:' . ruta . '?pagina=pdf_editar&id=' . $_POST['id'] . '&error=4');
+        exit;
+      }
     } else {
+      // Mantener el archivo existente
       $img1 = $sql[0]['pdf'];
     }
 
@@ -86,20 +154,66 @@ class Inicio extends Conectar
     // Obtener id_user del PDF para redirigir correctamente
     $id_user = isset($sql[0]['id_user']) ? $sql[0]['id_user'] : '';
     if (!empty($id_user)) {
-      header('Location:' . ruta . '?pagina=pdf&id=' . $id_user);
+      header('Location:' . ruta . '?pagina=pdf&id=' . $id_user . '&success=pdf_editado');
     } else {
-      header('Location:' . ruta . '?pagina=pdf');
+      header('Location:' . ruta . '?pagina=pdf&success=pdf_editado');
     }
     exit;
   }
 
   public function eliminar_pdf()
   {
-    $stmt = $this->datab->prepare("delete from pdf where id=?");
-    $stmt->bindValue(1, $_POST['id']);
-    $stmt->execute();
-    header('Location:' . ruta . '?pagina=pdf&id=' . $_POST['id_user']);
-    exit;
+    // Detectar si es petición AJAX (por header o por Accept)
+    $is_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ||
+               (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+    
+    if ($is_ajax) {
+      try {
+        // Obtener el nombre del archivo PDF antes de eliminar
+        $sql = $this->consultas("SELECT pdf FROM pdf WHERE id = '" . $_POST['id'] . "'");
+        $pdf_filename = !empty($sql[0]['pdf']) ? $sql[0]['pdf'] : '';
+        
+        // Eliminar de la base de datos
+        $stmt = $this->datab->prepare("DELETE FROM pdf WHERE id=?");
+        $stmt->bindValue(1, $_POST['id']);
+        $stmt->execute();
+        
+        // Intentar eliminar el archivo físico si existe
+        if (!empty($pdf_filename)) {
+          // Buscar en la ubicación correcta: intranet/publico/img_data/
+          $base_dir = dirname(dirname(dirname(__DIR__))); // Sube 3 niveles: intranet/
+          $file_path = $base_dir . '/publico/img_data/' . $pdf_filename;
+          if (file_exists($file_path)) {
+            @unlink($file_path);
+          }
+          // También buscar en la ubicación antigua por compatibilidad
+          $file_path_old = dirname($base_dir) . '/publico/img_data/' . $pdf_filename;
+          if (file_exists($file_path_old)) {
+            @unlink($file_path_old);
+          }
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode(['estado' => '1', 'mensaje' => 'PDF eliminado correctamente']);
+        exit;
+      } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode(['estado' => '0', 'mensaje' => 'Error al eliminar el PDF: ' . $e->getMessage()]);
+        exit;
+      }
+    } else {
+      // Si no es AJAX, redirigir como antes (compatibilidad)
+      $id_user = isset($_POST['id_user']) ? $_POST['id_user'] : '';
+      $stmt = $this->datab->prepare("DELETE FROM pdf WHERE id=?");
+      $stmt->bindValue(1, $_POST['id']);
+      $stmt->execute();
+      if (!empty($id_user)) {
+        header('Location:' . ruta . '?pagina=pdf&id=' . $id_user);
+      } else {
+        header('Location:' . ruta . '?pagina=pdf');
+      }
+      exit;
+    }
   }
 
   public function mostrar_pdf_id($id)
@@ -133,17 +247,18 @@ class Inicio extends Conectar
       header('Location:' . ruta . '?pagina=clientes&error=1');
       exit;
     } else {
-      $clave_hash = password_hash($_POST['clave'], PASSWORD_DEFAULT);
+      // Guardar clave en texto plano para que los clientes puedan verla
+      $clave_plano = $_POST['clave'];
 
       $stmt = $this->datab
         ->prepare("insert into clientes (ruc,razon_social,representante,clave) values(?,?,?,?)");
       $stmt->bindParam(1, $_POST['ruc']);
       $stmt->bindParam(2, $_POST['razon_social']);
       $stmt->bindParam(3, $_POST['representante']);
-      $stmt->bindParam(4, $clave_hash);
+      $stmt->bindParam(4, $clave_plano);
       $stmt->execute();
 
-      header('Location:' . ruta . '?pagina=clientes');
+      header('Location:' . ruta . '?pagina=clientes&success=cliente_agregado');
       exit;
     }
   }
@@ -155,8 +270,9 @@ class Inicio extends Conectar
     );
     $claven = $sql[0]['clave'];
 
+    // Si se proporciona una nueva clave, guardarla en texto plano
     if (!empty($_POST['clave']) && $_POST['clave'] !== $sql[0]['clave']) {
-      $claven = password_hash($_POST['clave'], PASSWORD_DEFAULT);
+      $claven = $_POST['clave'];
     }
 
     $stmt = $this->datab->prepare("UPDATE clientes set 
@@ -172,17 +288,36 @@ class Inicio extends Conectar
     $stmt->bindParam(4, $claven);
     $stmt->bindParam(5, $_POST['id']);
     $stmt->execute();
-    header('Location:' . ruta . '?pagina=clientes');
+    header('Location:' . ruta . '?pagina=clientes&success=cliente_editado');
     exit;
   }
 
   public function eliminar_clientes()
   {
-    $stmt = $this->datab->prepare("delete from clientes where id=?");
-    $stmt->bindValue(1, $_POST['id']);
-    $stmt->execute();
-    header('Location:' . ruta . '?pagina=clientes');
-    exit;
+    // Si es una petición AJAX, devolver JSON
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+      try {
+        // Eliminar de la base de datos
+        $stmt = $this->datab->prepare("DELETE FROM clientes WHERE id=?");
+        $stmt->bindValue(1, $_POST['id']);
+        $stmt->execute();
+        
+        header('Content-Type: application/json');
+        echo json_encode(['estado' => '1', 'mensaje' => 'Empresa eliminada correctamente']);
+        exit;
+      } catch (Exception $e) {
+        header('Content-Type: application/json');
+        echo json_encode(['estado' => '0', 'mensaje' => 'Error al eliminar la empresa']);
+        exit;
+      }
+    } else {
+      // Si no es AJAX, redirigir como antes (compatibilidad)
+      $stmt = $this->datab->prepare("DELETE FROM clientes WHERE id=?");
+      $stmt->bindValue(1, $_POST['id']);
+      $stmt->execute();
+      header('Location:' . ruta . '?pagina=clientes');
+      exit;
+    }
   }
 
   public function mostrar_clientes_id($id)

@@ -22,47 +22,50 @@
     <!-- Botón Volver -->
     <div class="back-button-section">
       <a href="<?= ruta ?>?pagina=clientes" class="btn-volver">
-        <i class="fa fa-arrow-left"></i> Volver
+        <i class="fa fa-arrow-left"></i> <span>Volver</span>
       </a>
     </div>
 
-    <!-- Banner de Empresa -->
-    <?php if (isset($razon_social) && !empty($razon_social)): ?>
-      <div class="empresa-banner">
-        <div class="empresa-banner-content">
-          <h2><?php echo strtoupper(htmlspecialchars($razon_social)) ?></h2>
-        </div>
-      </div>
-    <?php endif; ?>
-
-    <!-- Search and Add Section - Basado en imágenes intranetdesing -->
-    <div class="search-add-section">
+    <!-- Header Section - Título, Botón y Búsqueda en una línea -->
+    <div class="pdf-header-section">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="search-add-container pdf-actions-layout">
-              <!-- Botón Agregar PDF (Verde) - IZQUIERDA -->
-              <div class="add-button-container">
-                <a href="<?= ruta ?>?pagina=pdf_agregar&id=<?php echo $_GET['id'] ?>" class="btn-add-pdf-verde">
-                  <i class="fa fa-plus"></i> Agregar Nuevo PDF
-                </a>
-              </div>
-              
-              <!-- Barra de búsqueda - DERECHA -->
-              <form action="<?= ruta ?>" method="get" class="search-form">
-                <input type="hidden" name="pagina" value="<?php echo $_GET['pagina'] ?>">
-                <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
-                <input type="hidden" name="p" value="1">
-                <div class="input-group-search">
-                  <?php if (!empty($_GET['b']) and isset($_GET['b'])): ?>
-                    <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>&id=<?php echo $_GET['id'] ?>" class="btn btn-outline-secondary btn-todos">Todos</a>
-                  <?php endif; ?>
-                  <input type="text" class="form-control-search" name="b" placeholder="Buscar PDF" value="<?php echo $get_b2 ?>">
-                  <button class="btn btn-search" type="submit">
-                    <i class="fa fa-search"></i>
+            <div class="pdf-header-container">
+              <!-- Título de la Empresa (Botón Azul) - IZQUIERDA -->
+              <?php if (isset($razon_social) && !empty($razon_social)): ?>
+                <div class="empresa-title-button">
+                  <button type="button" class="btn-empresa-title">
+                    <?php echo strtoupper(htmlspecialchars($razon_social)) ?>
                   </button>
                 </div>
-              </form>
+              <?php endif; ?>
+              
+              <!-- Botón y Búsqueda agrupados a la DERECHA -->
+              <div class="pdf-header-actions">
+                <!-- Botón Agregar PDF (Verde) -->
+                <div class="add-button-container">
+                  <a href="<?= ruta ?>?pagina=pdf_agregar&id=<?php echo $_GET['id'] ?>" class="btn-add-pdf-verde">
+                    <i class="fa fa-plus"></i> Agregar Nuevo PDF
+                  </a>
+                </div>
+                
+                <!-- Barra de búsqueda -->
+                <form action="<?= ruta ?>" method="get" class="search-form">
+                  <input type="hidden" name="pagina" value="<?php echo $_GET['pagina'] ?>">
+                  <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+                  <input type="hidden" name="p" value="1">
+                  <div class="input-group-search">
+                    <?php if (!empty($_GET['b']) and isset($_GET['b'])): ?>
+                      <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>&id=<?php echo $_GET['id'] ?>" class="btn btn-outline-secondary btn-todos">Todos</a>
+                    <?php endif; ?>
+                    <input type="text" class="form-control-search" name="b" placeholder="Buscar PDF" value="<?php echo $get_b2 ?>">
+                    <button class="btn btn-search" type="submit">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -130,5 +133,36 @@
   </div>
 
   <?php include("footer.php"); ?>
+  
+  <script>
+    // Mostrar notificaciones de éxito
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const success = urlParams.get('success');
+      
+      if (success === 'pdf_agregado') {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'El PDF se ha agregado correctamente',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+        // Limpiar parámetro de la URL
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/[?&]success=[^&]+/, '').replace(/^&/, '?'));
+      } else if (success === 'pdf_editado') {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'El PDF se ha actualizado correctamente',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/[?&]success=[^&]+/, '').replace(/^&/, '?'));
+      }
+    });
+  </script>
 </body>
 </html>

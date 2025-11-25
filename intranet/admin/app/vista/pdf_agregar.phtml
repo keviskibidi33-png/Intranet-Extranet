@@ -19,13 +19,17 @@
     <!-- Header-->
     <?php include("header_top.php"); ?>
 
+    <!-- Botón Volver -->
+    <div class="back-button-section">
+      <a href="<?= ruta ?>?pagina=pdf&id=<?php echo $_GET['id'] ?>" class="btn-volver">
+        <i class="fa fa-arrow-left"></i> <span>Volver</span>
+      </a>
+    </div>
+
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
       <div class="col-sm-12">
-        <a href="<?= ruta ?>?pagina=pdf&id=<?php echo $_GET['id'] ?>" class="btn-outline-secondary">
-          <i class="fa fa-arrow-left"></i> Volver
-        </a>
-        <h1>Agregar Nuevo PDF</h1>
+        <h1>AGREGAR NUEVO PDF</h1>
       </div>
     </div>
 
@@ -33,40 +37,54 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <form action="<?= ruta ?>?pagina=pdf_agregar" method="post" enctype="multipart/form-data">
-                <div class="space-y-6">
-                  <div class="form-group">
-                    <label for="img1">Archivo PDF</label>
-                    <div class="file-upload-area">
-                      <div class="file-upload-content">
-                        <i class="fa fa-upload file-upload-icon"></i>
-                        <div class="file-upload-text">
-                          <label for="file-upload-input" class="file-upload-link">Cargar un archivo</label>
-                          <span> o arrastrar y soltar</span>
+          <div class="grid-2-columns">
+            <!-- Formulario completo con dos columnas -->
+            <form action="<?= ruta ?>?pagina=pdf_agregar" method="post" enctype="multipart/form-data" class="pdf-agregar-form" style="display: contents;">
+              <!-- Sección izquierda: Área de carga de archivo PDF -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="pdf-upload-preview">
+                    <div class="pdf-upload-preview-content">
+                      <div class="file-upload-area-pdf" id="file-upload-area">
+                        <div class="file-upload-content-pdf">
+                          <i class="fa fa-arrow-up file-upload-icon-pdf"></i>
+                          <div class="file-upload-text-pdf">
+                            <label for="file-upload-input" class="file-upload-link-pdf">Cargar un archivo</label>
+                            <span class="file-upload-or"> o arrastrar y soltar</span>
+                          </div>
+                          <p class="file-upload-hint-pdf">PDF hasta 10MB</p>
+                          <input type="file" class="form-control-file" id="file-upload-input" name="img1" accept=".pdf" required>
                         </div>
-                        <p class="file-upload-hint">PDF hasta 10MB</p>
-                        <input type="file" class="form-control" id="file-upload-input" name="img1" accept=".pdf" required style="display: none;">
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  <div class="form-group">
-                    <label for="titulo">Título del PDF</label>
-                    <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ingrese el título del documento" required>
-                  </div>
+              <!-- Sección derecha: Formulario -->
+              <div>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="space-y-6">
+                      <!-- Campo de título del PDF -->
+                      <div class="form-group">
+                        <label for="titulo" class="form-label-pdf">Título del PDF</label>
+                        <input type="text" class="form-control-pdf" id="titulo" name="titulo" placeholder="Ingrese el título del documento" required>
+                      </div>
 
-                  <div class="form-group" style="display: flex; justify-content: flex-end; padding-top: 16px;">
-                    <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
-                    <input type="hidden" name="for_pdf_agregar" value="ok">
-                    <button type="submit" class="btn-geofal-primary">
-                      Guardar PDF
-                    </button>
+                      <!-- Botón Guardar -->
+                      <div class="form-group" style="display: flex; justify-content: flex-end; padding-top: 16px;">
+                        <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+                        <input type="hidden" name="for_pdf_agregar" value="ok">
+                        <button type="submit" class="btn-guardar-pdf">
+                          Guardar PDF
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -77,24 +95,55 @@
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const fileUploadArea = document.querySelector('.file-upload-area');
+      const fileUploadArea = document.getElementById('file-upload-area');
       const fileInput = document.getElementById('file-upload-input');
       
       if (fileUploadArea && fileInput) {
-        fileUploadArea.addEventListener('click', function() {
-          fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', function(e) {
-          if (e.target.files.length > 0) {
-            const fileName = e.target.files[0].name;
-            const fileSize = (e.target.files[0].size / 1024 / 1024).toFixed(2);
-            const uploadText = fileUploadArea.querySelector('.file-upload-text');
-            if (uploadText) {
-              uploadText.innerHTML = '<span class="file-upload-link">' + fileName + '</span><br><span style="font-size: 12px; color: #6B7280;">' + fileSize + ' MB</span>';
-            }
+        // Click en el área para abrir selector de archivos
+        fileUploadArea.addEventListener('click', function(e) {
+          if (e.target !== fileInput) {
+            fileInput.click();
           }
         });
+        
+        // Drag and drop
+        fileUploadArea.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          fileUploadArea.classList.add('drag-over');
+        });
+        
+        fileUploadArea.addEventListener('dragleave', function(e) {
+          e.preventDefault();
+          fileUploadArea.classList.remove('drag-over');
+        });
+        
+        fileUploadArea.addEventListener('drop', function(e) {
+          e.preventDefault();
+          fileUploadArea.classList.remove('drag-over');
+          if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            updateFileDisplay();
+          }
+        });
+        
+        // Cambio de archivo
+        fileInput.addEventListener('change', function(e) {
+          if (e.target.files.length > 0) {
+            updateFileDisplay();
+          }
+        });
+        
+        function updateFileDisplay() {
+          if (fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            const fileSize = (fileInput.files[0].size / 1024 / 1024).toFixed(2);
+            const uploadText = fileUploadArea.querySelector('.file-upload-text-pdf');
+            if (uploadText) {
+              uploadText.innerHTML = '<span class="file-upload-link-pdf">' + fileName + '</span><br><span style="font-size: 12px; color: #6B7280;">' + fileSize + ' MB</span>';
+            }
+            fileUploadArea.classList.add('file-selected');
+          }
+        }
       }
     });
   </script>

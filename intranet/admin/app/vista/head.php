@@ -59,6 +59,3 @@
 
 <!-- Script principal (requiere jQuery) -->
 <script src="<?php echo ruta ?>include/assets/js/main.js"></script>
-
-<!-- Script de verificación de espacios (solo para debug) -->
-<script src="<?php echo ruta ?>app/js/debug-spacing.js"></script>

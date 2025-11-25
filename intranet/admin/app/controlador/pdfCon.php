@@ -44,9 +44,15 @@ if (!isset($_SESSION['id_geofal'])) {
 
     }
 
-  
+    // Procesar agregar PDF
+    if (isset($_POST["for_pdf_agregar"]) and $_POST["for_pdf_agregar"] == "ok") {
+      $inicio->for_pdf_agregar();
+    }
 
-
+    // Procesar editar PDF
+    if (isset($_POST["for_pdf_editar"]) and $_POST["for_pdf_editar"] == "ok") {
+      $inicio->for_pdf_editar();
+    }
 
     if (!empty($_GET['id']) and isset($_GET['id'])) {
 

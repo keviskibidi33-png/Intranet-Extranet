@@ -19,12 +19,16 @@
     <!-- Header-->
     <?php include("header_top.php"); ?>
 
+    <!-- Botón Volver -->
+    <div class="back-button-section">
+      <a href="<?= ruta ?>?pagina=pdf&id=<?php echo isset($mostrar_pdf_id[0]['id_user']) ? $mostrar_pdf_id[0]['id_user'] : '' ?>" class="btn-volver">
+        <i class="fa fa-arrow-left"></i> <span>Volver</span>
+      </a>
+    </div>
+
     <!-- Breadcrumbs -->
     <div class="breadcrumbs">
       <div class="col-sm-12">
-        <a href="<?= ruta ?>?pagina=pdf&id=<?php echo isset($mostrar_pdf_id[0]['id_user']) ? $mostrar_pdf_id[0]['id_user'] : '' ?>" class="btn-outline-secondary">
-          <i class="fa fa-arrow-left"></i> Volver
-        </a>
         <h1>Modificar PDF</h1>
       </div>
     </div>
@@ -39,10 +43,80 @@
               <div class="card-body">
                 <div class="pdf-preview">
                   <div class="pdf-preview-content">
-                    <?php if (!empty($mostrar_pdf_id[0]['pdf'])): ?>
-                      <i class="fa fa-file-pdf-o pdf-preview-icon"></i>
-                      <p class="pdf-preview-title"><?php echo htmlspecialchars($mostrar_pdf_id[0]['titulo']) ?></p>
-                      <p class="pdf-preview-size">PDF Documento</p>
+                    <?php if (!empty($mostrar_pdf_id[0]['pdf'])): 
+                      // Construir ruta del PDF
+                      // ruta es: http://localhost/public_html/intranet/admin/
+                      // Los PDFs se guardan en: intranet/publico/img_data/ (como en producción)
+                      // Necesitamos: http://localhost/public_html/intranet/publico/img_data/
+                      $pdf_filename = htmlspecialchars($mostrar_pdf_id[0]['pdf']);
+                      
+                      // Construir URL usando la misma lógica que el extranet
+                      // En el extranet se usa: ruta . 'publico/img_data/' donde ruta = http://localhost/public_html/intranet/
+                      // Para el admin, necesitamos construir la misma URL base del intranet
+                      // ruta en admin es: http://localhost/public_html/intranet/admin/
+                      // Necesitamos: http://localhost/public_html/intranet/publico/img_data/
+                      $base_ruta = rtrim(ruta, '/');
+                      $base_ruta = str_replace('/admin', '', $base_ruta);
+                      $base_ruta = str_replace('/admin/', '', $base_ruta); // Por si acaso hay doble barra
+                      $pdf_path = $base_ruta . '/publico/img_data/' . $pdf_filename;
+                      
+                      // Debug: Verificar la URL construida
+                      // echo "<!-- DEBUG: ruta = " . ruta . " -->";
+                      // echo "<!-- DEBUG: base_ruta = " . $base_ruta . " -->";
+                      // echo "<!-- DEBUG: pdf_path = " . $pdf_path . " -->";
+                      
+                      // Verificar que el archivo existe físicamente usando ruta absoluta
+                      // Desde admin/app/vista/ necesitamos subir 3 niveles: intranet/
+                      $base_dir_vista = dirname(dirname(dirname(__DIR__))); // Sube 3 niveles desde vista: intranet/
+                      $file_path_physical = $base_dir_vista . '/publico/img_data/' . $pdf_filename;
+                      $file_exists = file_exists($file_path_physical);
+                      
+                      // Si no existe, buscar en la ubicación antigua (public_html/publico/img_data/)
+                      // Esto es para compatibilidad con PDFs guardados antes de la corrección
+                      if (!$file_exists) {
+                        $base_dir_old = dirname($base_dir_vista); // public_html/
+                        $file_path_old = $base_dir_old . '/publico/img_data/' . $pdf_filename;
+                        if (file_exists($file_path_old)) {
+                          $file_exists = true;
+                          $file_path_physical = $file_path_old;
+                          // Actualizar la URL para apuntar a la ubicación antigua
+                          $base_ruta_old = rtrim(ruta, '/');
+                          $base_ruta_old = str_replace('/admin', '', $base_ruta_old);
+                          $base_ruta_old = str_replace('/intranet', '', $base_ruta_old);
+                          $pdf_path = $base_ruta_old . '/publico/img_data/' . $pdf_filename;
+                        }
+                      }
+                    ?>
+                      <div class="pdf-viewer-container">
+                        <?php if ($file_exists): ?>
+                          <!-- Usar endpoint PHP para servir el PDF directamente -->
+                          <?php 
+                            // Construir URL del visor PHP
+                            $viewer_url = ruta . '?pagina=pdf_viewer&file=' . urlencode($pdf_filename);
+                          ?>
+                          <iframe src="<?php echo htmlspecialchars($viewer_url) ?>#toolbar=0" class="pdf-viewer-iframe" type="application/pdf" allow="fullscreen">
+                            <p>Tu navegador no puede mostrar PDFs. 
+                              <a href="<?php echo htmlspecialchars($viewer_url) ?>" target="_blank">Descargar PDF</a>
+                            </p>
+                          </iframe>
+                        <?php else: ?>
+                          <div style="padding: 40px; text-align: center; color: #d9534f; background: #f8f9fa; border-radius: 8px;">
+                            <i class="fa fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px; color: #d9534f;"></i>
+                            <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Archivo PDF no encontrado</p>
+                            <p style="font-size: 14px; color: #666; margin-bottom: 4px;">El archivo <strong><?php echo $pdf_filename ?></strong> no existe en el servidor.</p>
+                            <p style="font-size: 12px; color: #999; margin-top: 8px;">Ruta esperada: <code><?php echo $file_path_physical ?></code></p>
+                            <p style="font-size: 12px; color: #999;">URL esperada: <code><?php echo $pdf_path ?></code></p>
+                          </div>
+                        <?php endif; ?>
+                      </div>
+                      <div class="pdf-info">
+                        <i class="fa fa-file-pdf-o pdf-preview-icon"></i>
+                        <p class="pdf-preview-title"><?php echo htmlspecialchars($mostrar_pdf_id[0]['titulo']) ?></p>
+                        <p class="pdf-preview-size">PDF Documento</p>
+                        <a href="<?php echo htmlspecialchars($viewer_url) ?>" target="_blank" class="btn-view-pdf">
+                          <i class="fa fa-external-link"></i> Abrir en nueva pestaña
+                        </a>
+                      </div>
                     <?php else: ?>
                       <i class="fa fa-file-pdf-o pdf-preview-icon"></i>
                       <p class="pdf-preview-title">Sin PDF</p>
@@ -65,15 +139,15 @@
 
                       <div class="form-group">
                         <label for="img1">Reemplazar Archivo</label>
-                        <div class="file-upload-area">
-                          <div class="file-upload-content">
-                            <i class="fa fa-upload file-upload-icon"></i>
-                            <div class="file-upload-text">
-                              <label for="file-upload-input" class="file-upload-link">Cargar un archivo</label>
-                              <span> o arrastrar y soltar</span>
+                        <div class="file-upload-area-pdf" id="file-upload-area-edit">
+                          <div class="file-upload-content-pdf">
+                            <i class="fa fa-arrow-up file-upload-icon-pdf"></i>
+                            <div class="file-upload-text-pdf">
+                              <label for="file-upload-input-edit" class="file-upload-link-pdf">Cargar un archivo</label>
+                              <span class="file-upload-or"> o arrastrar y soltar</span>
                             </div>
-                            <p class="file-upload-hint">PDF hasta 10MB</p>
-                            <input type="file" class="form-control" id="file-upload-input" name="img1" accept=".pdf" style="display: none;">
+                            <p class="file-upload-hint-pdf">PDF hasta 10MB</p>
+                            <input type="file" class="form-control-file" id="file-upload-input-edit" name="img1" accept=".pdf">
                           </div>
                         </div>
                       </div>
@@ -99,26 +173,56 @@
   <?php include("footer.php"); ?>
   
   <script>
-    // Hacer que el área de upload sea clickeable
     document.addEventListener('DOMContentLoaded', function() {
-      const fileUploadArea = document.querySelector('.file-upload-area');
-      const fileInput = document.getElementById('file-upload-input');
+      const fileUploadArea = document.getElementById('file-upload-area-edit');
+      const fileInput = document.getElementById('file-upload-input-edit');
       
       if (fileUploadArea && fileInput) {
-        fileUploadArea.addEventListener('click', function() {
-          fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', function(e) {
-          if (e.target.files.length > 0) {
-            const fileName = e.target.files[0].name;
-            const fileSize = (e.target.files[0].size / 1024 / 1024).toFixed(2);
-            const uploadText = fileUploadArea.querySelector('.file-upload-text');
-            if (uploadText) {
-              uploadText.innerHTML = '<span class="file-upload-link">' + fileName + '</span><br><span style="font-size: 12px; color: #6B7280;">' + fileSize + ' MB</span>';
-            }
+        // Click en el área para abrir selector de archivos
+        fileUploadArea.addEventListener('click', function(e) {
+          if (e.target !== fileInput) {
+            fileInput.click();
           }
         });
+        
+        // Drag and drop
+        fileUploadArea.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          fileUploadArea.classList.add('drag-over');
+        });
+        
+        fileUploadArea.addEventListener('dragleave', function(e) {
+          e.preventDefault();
+          fileUploadArea.classList.remove('drag-over');
+        });
+        
+        fileUploadArea.addEventListener('drop', function(e) {
+          e.preventDefault();
+          fileUploadArea.classList.remove('drag-over');
+          if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            updateFileDisplay();
+          }
+        });
+        
+        // Cambio de archivo
+        fileInput.addEventListener('change', function(e) {
+          if (e.target.files.length > 0) {
+            updateFileDisplay();
+          }
+        });
+        
+        function updateFileDisplay() {
+          if (fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            const fileSize = (fileInput.files[0].size / 1024 / 1024).toFixed(2);
+            const uploadText = fileUploadArea.querySelector('.file-upload-text-pdf');
+            if (uploadText) {
+              uploadText.innerHTML = '<span class="file-upload-link-pdf">' + fileName + '</span><br><span style="font-size: 12px; color: #6B7280;">' + fileSize + ' MB</span>';
+            }
+            fileUploadArea.classList.add('file-selected');
+          }
+        }
       }
     });
   </script>
