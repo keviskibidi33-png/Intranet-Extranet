@@ -156,6 +156,16 @@
     padding-top: 20px;
 }
 
+/* Iconos solo para desktop (dentro del panel de imagen) */
+.login-social-icons-desktop {
+    display: flex;
+}
+
+/* Iconos solo para móvil (fuera del contenedor) */
+.login-social-icons-mobile {
+    display: none;
+}
+
 .login-social-icons a {
     width: 44px;
     height: 44px;
@@ -202,13 +212,21 @@
 .login-logo-container {
     display: inline-block;
     margin-bottom: 12px;
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .login-logo-img {
     max-width: 140px;
     height: auto;
     background: transparent !important;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    display: block;
 }
 
 .login-tagline {
@@ -345,43 +363,138 @@
    RESPONSIVE
    ============================================ */
 @media (max-width: 968px) {
-    .login-container {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
+    .login-body {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 15px;
     }
     
+    .login-body::before {
+        background: rgba(0, 0, 0, 0.6); /* Overlay más oscuro en móvil */
+    }
+    
+    .login-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        min-height: auto;
+        margin: auto;
+        margin-top: 0;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Ocultar panel de imagen en móvil */
     .login-image-panel {
-        min-height: 300px;
-        flex: 0 0 auto;
+        display: none;
     }
     
     .login-form-panel {
         flex: 1;
+        width: 100%;
         padding: 40px 30px;
+        border-radius: 16px;
     }
     
-    .login-social-icons {
-        position: relative;
-        bottom: auto;
-        left: auto;
-        transform: none;
-        margin-top: 20px;
+    /* Centrar branding y logo */
+    .login-branding {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .login-logo-container {
+        display: block;
+        margin: 0 auto 12px;
+    }
+    
+    .login-tagline {
+        text-align: center;
+    }
+    
+    /* Centrar título */
+    .login-title {
+        text-align: center;
+    }
+    
+    /* Ocultar iconos de desktop en móvil */
+    .login-social-icons-desktop {
+        display: none;
+    }
+    
+    /* Mostrar iconos de móvil */
+    .login-social-icons-mobile {
+        display: flex;
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
         justify-content: center;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .login-social-icons-mobile a {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(220, 220, 220, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+        text-decoration: none;
+        transition: var(--transition);
+        backdrop-filter: blur(8px);
+        font-size: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-social-icons-mobile a:hover {
+        background: rgba(255, 255, 255, 1);
+        color: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Ocultar footer en móvil */
+    .login-footer {
+        display: none;
     }
 }
 
 @media (max-width: 480px) {
+    .login-body {
+        padding: 15px;
+    }
+    
     .login-form-panel {
-        padding: 30px 20px;
+        padding: 35px 25px;
     }
     
     .login-title {
-        font-size: 24px;
+        font-size: 22px;
+        margin-bottom: 25px;
     }
     
     .login-logo-img {
-        max-width: 100px;
+        max-width: 120px;
+    }
+    
+    .login-tagline {
+        font-size: 13px;
+    }
+    
+    .login-social-icons-mobile {
+        bottom: 20px;
+        gap: 10px;
+    }
+    
+    .login-social-icons-mobile a {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
     }
 }
 
