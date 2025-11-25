@@ -314,6 +314,11 @@ header#header {
   gap: 20px;
 }
 
+/* Ocultar el caret que Bootstrap agrega automáticamente */
+.user-area .dropdown-toggle::after {
+  display: none !important;
+}
+
 .notification-icon {
   color: var(--gray-600);
   text-decoration: none;
@@ -337,6 +342,7 @@ header#header {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: nowrap;
 }
 
 .user-avatar-circle {
@@ -356,6 +362,21 @@ header#header {
   font-size: 14px;
   color: var(--gray-700);
   font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+}
+
+.user-dropdown-arrow {
+  font-size: 12px;
+  color: var(--primary-blue);
+  margin-left: 6px;
+  transition: transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dropdown-toggle[aria-expanded="true"] .user-dropdown-arrow {
+  transform: rotate(180deg);
 }
 
 .user-menu {
@@ -1856,6 +1877,81 @@ label {
 
 .mt-3 {
   margin-top: 0;
+}
+
+/* ============================================
+   PAGINACIÓN
+   ============================================ */
+.pagination-wrapper {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.pagination .page-item {
+  margin: 0;
+}
+
+.pagination .page-item .page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 8px 12px;
+  color: var(--primary-blue);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pagination .page-item .page-link:hover {
+  background: var(--gray-50);
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+  transform: translateY(-1px);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--primary-blue);
+  color: var(--white);
+  border-color: var(--primary-blue);
+  font-weight: 600;
+}
+
+.pagination .page-item.active .page-link:hover {
+  background: var(--primary-blue-hover);
+  transform: translateY(-1px);
+}
+
+.pagination .page-item.disabled .page-link {
+  color: var(--gray-400);
+  background: var(--gray-100);
+  border-color: var(--gray-200);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination .page-item.disabled .page-link:hover {
+  transform: none;
+  background: var(--gray-100);
 }
 
 /* ============================================

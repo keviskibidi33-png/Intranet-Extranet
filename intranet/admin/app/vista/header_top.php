@@ -87,6 +87,7 @@
         <div class="user-avatar-container">
           <div class="user-avatar-circle">A</div>
           <span class="user-name-header">Administrador</span>
+          <i class="fa fa-chevron-down user-dropdown-arrow"></i>
         </div>
       </a>
 
