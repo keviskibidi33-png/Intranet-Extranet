@@ -1,0 +1,81 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="es">
+<!--<![endif]-->
+
+<head>
+  <?php include("head.php"); ?>
+  <link rel="stylesheet" href="<?php echo ruta ?>app/css/geofal-redesign.css">
+</head>
+
+<body>
+  <!-- Left Panel -->
+  <?php include("header_left.php"); ?>
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+      <div class="col-sm-12">
+        <a href="<?= ruta ?>?pagina=clientes" class="btn-outline-secondary">
+          <i class="fa fa-arrow-left"></i> Volver
+        </a>
+        <h1>Editar Empresa</h1>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form action="<?= ruta ?>?pagina=clientes_editar" method="post" enctype="multipart/form-data">
+                <div class="space-y-6">
+                  <div class="grid-2-columns">
+                    <div class="form-group">
+                      <label for="ruc">RUC</label>
+                      <input type="text" class="form-control" id="ruc" name="ruc" value="<?php echo htmlspecialchars($mostrar_clientes_id[0]['ruc']) ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="razon_social">Razón Social</label>
+                      <input type="text" class="form-control" id="razon_social" name="razon_social" value="<?php echo htmlspecialchars($mostrar_clientes_id[0]['razon_social']) ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="clave">Clave</label>
+                      <input type="password" class="form-control" id="clave" name="clave" placeholder="Dejar vacío para no cambiar" minlength="8">
+                      <small class="form-text">Mínimo 8 caracteres. Dejar vacío para mantener la contraseña actual.</small>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="representante">Representante</label>
+                      <input type="text" class="form-control" id="representante" name="representante" value="<?php echo htmlspecialchars($mostrar_clientes_id[0]['representante']) ?>" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="display: flex; justify-content: flex-end; padding-top: 16px;">
+                    <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+                    <input type="hidden" name="for_clientes_editar" value="ok">
+                    <button type="submit" class="btn-geofal-primary">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php include("footer.php"); ?>
+</body>
+</html>

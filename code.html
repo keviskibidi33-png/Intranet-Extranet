@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modificar PDF</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB", // A strong blue for buttons and interactive elements
+            "background-light": "#F8FAFC", // Light gray for the main content area
+            "background-dark": "#18181B",   // Dark gray for the main content area
+          },
+          fontFamily: {
+            display: ["Roboto", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.5rem",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background-light font-display">
+<div class="flex h-screen">
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+<div class="p-6 flex items-center justify-between">
+<div class="flex items-center">
+<img alt="Geofal logo" class="h-12 w-12 mr-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy7t2mjM0ZzCDHFH3eY6GS0NQmg-OywMGko_GY82aC9m68T760HmjITpjnwC3ZJ-Y-sGXFfqsOFtcY4aYxqsuYI1rjjk50XDUPl-sX9J9caPiTugWpRvJyODFfyu5xnWWDymO8HnfGtJRgnGOIAL1MUDzQ0heyxqj0V4oeBJCgnT7JGzXggF_hNjMNl5arCHcfHtYgXVEOAzDCUTzZReiB2nhsj88_U-STBrwcr3P0A9XTGus-AGGOzzeVZlDnniiixG9IZbtz-go5"/>
+<div>
+<p class="font-bold text-sm text-gray-800">Ingeniería</p>
+<p class="text-xs text-gray-600">y laboratorio</p>
+<p class="text-xs text-gray-600">de materiales</p>
+</div>
+</div>
+<button class="p-1 rounded-full hover:bg-gray-100">
+<span class="material-icons-outlined text-gray-500 text-xl">chevron_left</span>
+</button>
+</div>
+<nav class="mt-8 flex-1 px-4">
+<ul>
+<li>
+<a class="flex items-center p-3 text-gray-600 rounded-lg hover:bg-gray-100" href="#">
+<span class="material-icons-outlined mr-3">corporate_fare</span>
+              Empresas Geofal
+            </a>
+</li>
+<li class="mt-2">
+<a class="flex items-center p-3 text-gray-600 rounded-lg hover:bg-gray-100" href="#">
+<span class="material-icons-outlined mr-3">people</span>
+              Perfiles
+            </a>
+</li>
+</ul>
+</nav>
+</aside>
+<div class="flex-1 flex flex-col">
+<header class="bg-white border-b border-gray-200 h-16 flex items-center justify-end px-8">
+<div class="flex items-center space-x-6">
+<button>
+<span class="material-icons-outlined text-gray-600">notifications</span>
+</button>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">A</div>
+<span class="text-sm text-gray-700">Administrador</span>
+</div>
+</div>
+</header>
+<main class="flex-1 p-8 overflow-y-auto">
+<div class="max-w-4xl mx-auto">
+<div class="mb-6">
+<a class="inline-flex items-center text-gray-600 hover:text-gray-900 text-sm font-medium" href="#">
+<span class="material-icons-outlined text-base mr-1">arrow_back</span>
+              Volver
+            </a>
+</div>
+<h1 class="text-3xl font-bold text-gray-900 mb-8">Modificar PDF</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-white rounded-lg p-6 border border-gray-200 flex flex-col items-center justify-center min-h-[400px]">
+<div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4">
+<span class="material-icons-outlined text-5xl text-gray-400 mb-2">picture_as_pdf</span>
+<p class="text-gray-600 text-center font-semibold">REC 119 OT 119-25.pdf</p>
+<p class="text-sm text-gray-500 mt-1">1.2 MB</p>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2" for="pdf-title">Título del PDF</label>
+<input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-white text-gray-900" id="pdf-title" type="text" value="REC 119 OT 119-25"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2" for="file-upload">Reemplazar Archivo</label>
+<div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+<div class="space-y-1 text-center">
+<span class="material-icons-outlined mx-auto h-12 w-12 text-gray-400">upload_file</span>
+<div class="flex text-sm text-gray-600">
+<label class="relative cursor-pointer rounded-md font-medium text-primary hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary" for="file-upload-input">
+<span>Cargar un archivo</span>
+<input class="sr-only" id="file-upload-input" name="file-upload" type="file"/>
+</label>
+<p class="pl-1">o arrastrar y soltar</p>
+</div>
+<p class="text-xs text-gray-500">PDF hasta 10MB</p>
+</div>
+</div>
+</div>
+<div class="flex justify-end pt-4">
+<button class="w-full md:w-auto inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="submit">
+                  Guardar PDF
+                </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+</body></html>

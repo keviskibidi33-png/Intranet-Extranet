@@ -1,0 +1,1226 @@
+/**
+ * GEOFAL ADMIN PANEL - Rediseño completo desde cero
+ * Basado en code.html - Diseño limpio y moderno
+ * Sin conflictos, sin parches, solo lo necesario
+ */
+
+/* ============================================
+   VARIABLES GLOBALES (de code.html)
+   ============================================ */
+:root {
+  --primary-blue: #2563EB;
+  --primary-blue-hover: #1d4ed8;
+  --background-light: #F8FAFC;
+  --white: #ffffff;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+  --border-color: #E5E7EB;
+  --border-radius: 0.5rem;
+  --transition: all 0.2s ease-in-out;
+}
+
+/* ============================================
+   RESET BÁSICO
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-light);
+  color: var(--gray-900);
+  line-height: 1.5;
+}
+
+/* ============================================
+   LAYOUT PRINCIPAL - Basado en code.html
+   ============================================ */
+body {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================================
+   SIDEBAR IZQUIERDO - Rediseñado desde cero
+   Basado EXACTAMENTE en code.html
+   ============================================ */
+aside.left-panel,
+#left-panel {
+  width: 256px; /* w-64 = 256px */
+  background: var(--white);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+}
+
+#left-panel .navbar {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header del Sidebar - code.html: p-6 flex items-center justify-between */
+#left-panel .navbar-header {
+  padding: 24px; /* p-6 = 24px */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+  min-height: auto;
+}
+
+/* Logo Container - code.html: flex items-center */
+.geofal-logo-sidebar {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* mr-2 = 8px */
+  flex: 1;
+}
+
+.geofal-logo-sidebar img,
+.geofal-logo-img {
+  height: 48px; /* h-12 = 48px */
+  width: 48px; /* w-12 = 48px */
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.logo-title,
+.geofal-tagline-sidebar p.logo-title {
+  margin: 0;
+  font-weight: 700; /* font-bold */
+  font-size: 14px; /* text-sm */
+  color: var(--gray-800);
+  line-height: 1.2;
+}
+
+.logo-subtitle,
+.geofal-tagline-sidebar p.logo-subtitle {
+  margin: 0;
+  font-size: 12px; /* text-xs */
+  color: var(--gray-600);
+  line-height: 1.2;
+}
+
+/* Botón colapsar - code.html: p-1 rounded-full hover:bg-gray-100 */
+.navbar-toggler {
+  padding: 4px; /* p-1 = 4px */
+  border-radius: 50%; /* rounded-full */
+  border: none;
+  background: transparent;
+  color: var(--gray-500);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.navbar-toggler:hover {
+  background: var(--gray-100);
+}
+
+.navbar-toggler i {
+  font-size: 20px; /* text-xl */
+}
+
+/* Menú del Sidebar - code.html: mt-8 flex-1 px-4 */
+/* Reducido margin-top para subir más los iconos */
+#left-panel .main-menu,
+#left-panel .nav.navbar-nav,
+#left-panel .geofal-menu {
+  padding: 0 16px; /* px-4 = 16px */
+  margin-top: 10px; /* Reducido de 32px a 20px para subir más los iconos */
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Items del menú - code.html: li con mt-2 para el segundo */
+#left-panel .nav.navbar-nav li,
+#left-panel .geofal-menu li,
+#left-panel .menu-item {
+  margin: 0;
+  list-style: none;
+}
+
+#left-panel .nav.navbar-nav li:not(:first-child),
+#left-panel .geofal-menu li:not(:first-child),
+#left-panel .menu-item:not(:first-child) {
+  margin-top: 8px; /* mt-2 = 8px */
+}
+
+/* Links del menú - code.html: flex items-center p-3 text-gray-600 rounded-lg hover:bg-gray-100 */
+#left-panel .nav.navbar-nav li a,
+#left-panel .geofal-menu li a,
+#left-panel .menu-item a {
+  display: flex;
+  align-items: center;
+  padding: 12px; /* p-3 = 12px */
+  color: var(--gray-600);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: var(--border-radius); /* rounded-lg */
+  transition: var(--transition);
+  width: 100%;
+}
+
+#left-panel .nav.navbar-nav li a:hover,
+#left-panel .geofal-menu li a:hover,
+#left-panel .menu-item a:hover {
+  background-color: var(--gray-100);
+  color: var(--gray-900);
+}
+
+/* Estado activo */
+#left-panel .nav.navbar-nav li.active a,
+#left-panel .nav.navbar-nav li.active,
+#left-panel .geofal-menu li.active a,
+#left-panel .geofal-menu li.active,
+#left-panel .menu-item.active a,
+#left-panel .menu-item.active {
+  background-color: var(--gray-100);
+}
+
+#left-panel .nav.navbar-nav li.active a,
+#left-panel .geofal-menu li.active a,
+#left-panel .menu-item.active a {
+  color: var(--gray-900);
+  font-weight: 500;
+}
+
+/* Iconos del menú - code.html: mr-3 (12px) */
+#left-panel .nav.navbar-nav .menu-icon,
+#left-panel .geofal-menu .menu-icon,
+#left-panel .menu-item .menu-icon,
+#left-panel .nav.navbar-nav li a i,
+#left-panel .geofal-menu li a i,
+#left-panel .menu-item a i {
+  width: 24px;
+  margin-right: 12px; /* mr-3 = 12px */
+  font-size: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Texto del menú */
+#left-panel .nav.navbar-nav li a span,
+#left-panel .geofal-menu li a span,
+#left-panel .menu-item a span {
+  flex: 1;
+  text-align: left;
+}
+
+/* ============================================
+   RIGHT PANEL - Contenedor principal
+   REDISEÑADO DESDE CERO - Sin márgenes duplicados
+   CON SCROLL
+   ============================================ */
+.right-panel,
+#right-panel {
+  margin-left: 256px; /* Solo el right-panel tiene margin para el sidebar */
+  width: calc(100% - 256px);
+  min-height: 100vh;
+  max-height: 100vh; /* Limita la altura para activar scroll */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-light);
+  padding: 0; /* Sin padding, los elementos internos lo manejan */
+  overflow-y: auto; /* Scroll vertical */
+  overflow-x: hidden; /* Sin scroll horizontal */
+}
+
+/* ============================================
+   HEADER TOP - Barra superior (code.html: h-16)
+   ============================================ */
+.header,
+header.header,
+header#header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 32px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.header .header-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.header-menu .col-sm-7,
+.header-menu .col-sm-5 {
+  margin: 0;
+  padding: 0;
+}
+
+.menutoggle {
+  display: none;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.notification-icon {
+  color: var(--gray-600);
+  text-decoration: none;
+  padding: 6px;
+  border-radius: 50%;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-icon:hover {
+  background: var(--gray-100);
+}
+
+.notification-icon i {
+  font-size: 18px;
+}
+
+.user-avatar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.user-name-header {
+  font-size: 14px;
+  color: var(--gray-700);
+  font-weight: 400;
+}
+
+.user-menu {
+  min-width: 200px;
+  border: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  padding: 8px 0;
+  margin-top: 8px;
+}
+
+.user-menu .nav-link {
+  padding: 12px 20px;
+  color: var(--gray-900);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.user-menu .nav-link:hover {
+  background-color: var(--gray-100);
+}
+
+.user-menu .nav-link i {
+  width: 20px;
+  text-align: center;
+}
+
+/* ============================================
+   BREADCRUMBS / PAGE HEADER - REDISEÑADO DESDE CERO
+   SIN margin-left duplicado (ya está en right-panel)
+   ============================================ */
+.breadcrumbs {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0; /* SIN margin-left, ya está en right-panel */
+  width: 100%; /* Usa todo el ancho del right-panel */
+  display: block;
+}
+
+.breadcrumbs .col-sm-6,
+.breadcrumbs .col-sm-12 {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left; /* Columna alineada a la izquierda */
+}
+
+.breadcrumbs h1,
+.page-title h1,
+.breadcrumbs .col-sm-6 h1,
+.breadcrumbs .col-sm-12 h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2B5EC5 !important; /* Azul #2B5EC5 como especificaciones */
+  margin: 0;
+  padding: 24px 16px 20px 16px; /* Padding mínimo pero legible */
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-align: left !important; /* IZQUIERDA como solicitado */
+  display: block;
+  width: 100%;
+  text-transform: uppercase; /* Mayúsculas como especificaciones */
+}
+
+/* Nombre de empresa grande - A la izquierda debajo del título */
+.empresa-name-large {
+  margin: 0;
+  padding: 0 16px 24px 16px; /* Padding consistente */
+  text-align: left;
+  width: 100%;
+}
+
+.empresa-name-large h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+  text-align: left;
+  letter-spacing: -0.2px;
+  display: block;
+}
+
+.breadcrumbs .page-header {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* ============================================
+   PANTALLA 2: VISTA PDFs - Botón Volver y Banner
+   SIN margin-left duplicado
+   ============================================ */
+.back-button-section {
+  margin: 0; /* SIN margin-left, ya está en right-panel */
+  width: 100%; /* Usa todo el ancho del right-panel */
+  padding: 16px 16px 0 16px; /* Padding consistente */
+  background: var(--background-light);
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: var(--gray-700);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--transition);
+  border-radius: 6px;
+}
+
+.btn-volver:hover {
+  color: var(--primary-blue);
+  background: var(--gray-50);
+}
+
+.btn-volver i {
+  font-size: 14px;
+}
+
+/* Banner azul de empresa - EXACTO como especificaciones */
+.empresa-banner {
+  margin: 0; /* SIN margin-left, ya está en right-panel */
+  width: 100%; /* Usa todo el ancho del right-panel */
+  background: #2B5EC5; /* Azul especificado */
+  padding: 20px 16px; /* Padding consistente */
+}
+
+.empresa-banner-content {
+  max-width: 100%; /* Sin limitación de ancho */
+  margin: 0; /* Sin margin auto */
+}
+
+.empresa-banner h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+/* ============================================
+   SEARCH AND ADD SECTION - Rediseñado desde cero
+   Búsqueda y botón agregar CENTRADOS/ALINEADOS A LA DERECHA
+   ============================================ */
+.search-add-section {
+  margin: 0; /* SIN margin-left, ya está en right-panel */
+  width: 100%; /* Usa todo el ancho del right-panel */
+  padding: 16px 16px 32px 16px; /* Padding consistente */
+  background: var(--background-light);
+}
+
+/* Ajuste especial para vista PDFs - después del banner */
+.empresa-banner + .search-add-section {
+  padding-top: 24px;
+}
+
+.search-add-section .container-fluid {
+  max-width: 100%; /* Sin limitación de ancho */
+  margin: 0; /* Sin margin auto */
+  padding: 0;
+}
+
+.search-add-section .row {
+  margin: 0;
+}
+
+.search-add-section .col-12 {
+  padding: 0;
+}
+
+.search-add-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end; /* Alineado a la derecha por defecto */
+  gap: 16px;
+  max-width: 100%;
+  margin: 0;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+/* Layout especial para PDFs: Botón verde izquierda, búsqueda derecha */
+.pdf-actions-layout {
+  justify-content: space-between; /* Botón izquierda, búsqueda derecha */
+}
+
+.pdf-actions-layout .add-button-container {
+  order: 1; /* Botón primero (izquierda) */
+}
+
+.pdf-actions-layout .search-form {
+  order: 2; /* Búsqueda segundo (derecha) */
+}
+
+/* Para vista de empresas, centrar */
+.clientes-page .search-add-container {
+  justify-content: center;
+}
+
+/* Barra de búsqueda - EXACTA como en las imágenes */
+.search-form {
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+}
+
+.input-group-search {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  background: var(--white);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.input-group-search:focus-within {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-control-search {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gray-900);
+  background-color: var(--white);
+  border: none;
+  border-radius: 0;
+  outline: none;
+}
+
+.form-control-search::placeholder {
+  color: #9ca3af;
+}
+
+.btn-search {
+  padding: 10px 16px;
+  background: var(--white);
+  border: none;
+  border-left: 1px solid #e5e7eb;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  transition: all 0.15s ease;
+}
+
+.btn-search:hover {
+  background: #f9fafb;
+  color: var(--primary-blue);
+}
+
+.btn-search i {
+  font-size: 16px;
+}
+
+.btn-todos {
+  padding: 10px 14px;
+  font-size: 14px;
+  white-space: nowrap;
+  border-right: 1px solid #e5e7eb;
+  border-radius: 0;
+  margin: 0;
+  background: var(--white);
+  color: #374151;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-todos:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Botón Agregar Empresa - Azul */
+.add-button-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.btn-add-empresa {
+  margin-top: 0;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.btn-add-empresa:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-add-empresa:active {
+  transform: translateY(0);
+}
+
+/* Botón Agregar PDF - VERDE #28A745 como especificaciones */
+.btn-add-pdf-verde {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #28A745; /* Verde especificado */
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+
+.btn-add-pdf-verde:hover {
+  background: #218838;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  color: #ffffff;
+}
+
+.btn-add-pdf-verde:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-pdf-verde i {
+  font-size: 14px;
+}
+
+/* ============================================
+   BADGES DE ESTADO - No leído / Descargado
+   ============================================ */
+.badge-estado {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-no-leido {
+  background-color: #dc3545; /* Rojo */
+  color: #ffffff;
+}
+
+.badge-descargado {
+  background-color: #28a745; /* Verde */
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-add-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-form {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .add-button-container {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* ============================================
+   MAIN CONTENT - Área de contenido principal
+   REDISEÑADO - Sin margin-left duplicado
+   CON SCROLL MEJORADO
+   ============================================ */
+.content {
+  flex: 1;
+  padding: 0 16px 32px 16px; /* Padding consistente */
+  overflow-y: auto; /* Scroll vertical */
+  overflow-x: hidden; /* Sin scroll horizontal */
+  margin: 0; /* SIN margin-left, ya está en right-panel */
+  width: 100%; /* Usa todo el ancho del right-panel */
+  max-height: calc(100vh - 64px); /* Altura máxima menos header */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en móviles */
+}
+
+.content.mt-3 {
+  margin-top: 0;
+}
+
+/* Contenedor principal del contenido - Alineado a la izquierda */
+.content > .container-fluid {
+  max-width: 100%; /* Sin limitación de ancho */
+  margin: 0; /* Sin margin auto para alinear a la izquierda */
+  padding: 0; /* Sin padding adicional */
+}
+
+/* ============================================
+   CARDS - Basado en code.html - Centrado y profesional
+   ============================================ */
+.card {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-body {
+  padding: 24px 16px; /* Padding consistente y legible */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--white);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--gray-900);
+}
+
+/* ============================================
+   TABLES - Estilos de tabla mejorados y centrados
+   ============================================ */
+.table,
+.table-empresas-geofal {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 0;
+  background-color: var(--white);
+  font-size: 14px;
+  border-collapse: collapse;
+  table-layout: auto;
+  box-sizing: border-box;
+}
+
+.table thead {
+  background: var(--gray-50);
+}
+
+.table thead th {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: var(--gray-700);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-color);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.table tbody tr:hover {
+  background-color: var(--gray-50);
+}
+
+.table tbody td {
+  padding: 16px;
+  color: var(--gray-900);
+  vertical-align: middle;
+  word-wrap: break-word;
+  text-align: left;
+}
+
+.table tbody td:first-child {
+  font-weight: 500;
+}
+
+/* Centrar botones de acción en la columna de acciones */
+.table tbody td:last-child {
+  text-align: center;
+}
+
+.table-responsive {
+  overflow-x: auto; /* Scroll horizontal cuando sea necesario */
+  overflow-y: visible; /* Sin scroll vertical en la tabla */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en móviles */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Estilos de scrollbar personalizados para tablas */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+.text-geofal-orange {
+  color: #f34d23;
+  font-weight: 600;
+}
+
+/* Asegurar que las tablas estén dentro del contenedor correcto y centradas */
+.container-fluid .table-responsive {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: auto; /* Scroll horizontal */
+}
+
+.card .table-responsive {
+  width: 100%;
+  margin: 0;
+  overflow-x: auto; /* Scroll horizontal */
+}
+
+/* Scrollbar personalizado para right-panel */
+.right-panel::-webkit-scrollbar,
+#right-panel::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.right-panel::-webkit-scrollbar-track,
+#right-panel::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 5px;
+}
+
+.right-panel::-webkit-scrollbar-thumb,
+#right-panel::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 5px;
+}
+
+.right-panel::-webkit-scrollbar-thumb:hover,
+#right-panel::-webkit-scrollbar-thumb:hover,
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* ============================================
+   BUTTONS - Basado en code.html
+   ============================================ */
+.btn,
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  gap: 8px;
+}
+
+.btn-geofal-primary,
+.btn-primary {
+  background: var(--primary-blue);
+  color: white;
+  border-color: var(--primary-blue);
+}
+
+.btn-geofal-primary:hover,
+.btn-primary:hover {
+  background: var(--primary-blue-hover);
+  border-color: var(--primary-blue-hover);
+  color: white;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary-blue);
+  color: white;
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  color: var(--gray-600);
+  border-color: var(--border-color);
+}
+
+.btn-outline-secondary:hover {
+  background: var(--gray-100);
+  color: var(--gray-900);
+  border-color: var(--gray-300);
+}
+
+.btn-danger {
+  background: #DC2626;
+  color: white;
+  border-color: #DC2626;
+}
+
+.btn-danger:hover {
+  background: #B91C1C;
+  border-color: #B91C1C;
+  color: white;
+}
+
+.btn-success {
+  background: #10B981;
+  color: white;
+  border-color: #10B981;
+}
+
+.btn-success:hover {
+  background: #059669;
+  border-color: #059669;
+  color: white;
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-group-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ============================================
+   FORMS - Basado en code.html
+   ============================================ */
+.form-control,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gray-900);
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-control::placeholder {
+  color: var(--gray-400);
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-700);
+  margin-bottom: 8px;
+}
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-group .form-control {
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.input-group-append {
+  display: flex;
+}
+
+.input-group-append .btn {
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  border-left: none;
+}
+
+/* ============================================
+   ALERTS - Basado en Bootstrap pero simplificado
+   ============================================ */
+.alert {
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+}
+
+.alert-success {
+  background-color: #D1FAE5;
+  border-color: #10B981;
+  color: #065F46;
+}
+
+.alert-danger {
+  background-color: #FEE2E2;
+  border-color: #DC2626;
+  color: #991B1B;
+}
+
+.alert i {
+  margin-right: 8px;
+}
+
+/* ============================================
+   UTILITIES - Contenedores SIN margin-left duplicado
+   ============================================ */
+.container-fluid {
+  width: 100%;
+  padding: 0 16px; /* Padding consistente */
+  margin: 0; /* SIN margin-left, ya está en right-panel */
+  max-width: 100%; /* Sin limitación de ancho */
+  box-sizing: border-box;
+}
+
+/* Contenedor dentro de right-panel - Alineado a la izquierda */
+.right-panel > .container-fluid {
+  max-width: 100%; /* Sin limitación de ancho */
+  margin: 0; /* SIN margin-left duplicado */
+  padding: 0 16px; /* Padding consistente */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -16px;
+  width: 100%;
+}
+
+.col-12,
+.col-sm-6,
+.col-sm-12 {
+  padding: 0 16px;
+  flex: 0 0 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.col-sm-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* Asegurar que el contenido dentro de container-fluid esté bien alineado */
+.container-fluid .row {
+  margin-left: -16px;
+  margin-right: -16px;
+  width: calc(100% + 32px);
+}
+
+.container-fluid .col-12,
+.container-fluid .col-sm-12 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.mt-3 {
+  margin-top: 0;
+}
+
+/* ============================================
+   RESPONSIVE - Mobile
+   ============================================ */
+@media (max-width: 768px) {
+  #left-panel {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  #left-panel.open {
+    transform: translateX(0);
+  }
+
+  .right-panel,
+  #right-panel,
+  .content,
+  .breadcrumbs,
+  .container-fluid {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .breadcrumbs h1 {
+    padding: 24px 16px 16px 16px;
+    font-size: 24px;
+  }
+
+  .content {
+    padding: 0 16px 16px 16px;
+  }
+
+  .header {
+    padding: 0 16px;
+  }
+}

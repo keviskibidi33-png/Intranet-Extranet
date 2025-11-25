@@ -1,0 +1,126 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="es">
+<!--<![endif]-->
+
+<head>
+  <?php include("head.php"); ?>
+  <link rel="stylesheet" href="<?php echo ruta ?>app/css/geofal-redesign.css">
+  <script src="<?php echo ruta ?>app/js/verificar-layout.js"></script>
+</head>
+
+<body>
+  <!-- Left Panel -->
+  <?php include("header_left.php"); ?>
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+
+    <!-- Breadcrumbs / Page Header -->
+    <div class="breadcrumbs">
+      <div class="col-sm-12">
+        <h1>EMPRESAS GEOFAL</h1>
+      </div>
+    </div>
+
+    <!-- Search and Add Section - Basado en imágenes intranetdesing -->
+    <div class="search-add-section">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="search-add-container">
+              <!-- Barra de búsqueda -->
+              <form action="<?= ruta ?>" method="get" class="search-form">
+                <input type="hidden" name="pagina" value="<?php echo $_GET['pagina'] ?>">
+                <input type="hidden" name="p" value="1">
+                <div class="input-group-search">
+                  <?php if (!empty($_GET['b']) and isset($_GET['b'])): ?>
+                    <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>" class="btn btn-outline-secondary btn-todos">Todos</a>
+                  <?php endif; ?>
+                  <input type="text" class="form-control-search" name="b" placeholder="Buscar Empresa" value="<?php echo $get_b2 ?>">
+                  <button class="btn btn-search" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </form>
+              
+              <!-- Botón Agregar -->
+              <div class="add-button-container">
+                <a href="<?= ruta ?>?pagina=clientes_agregar" class="btn-geofal-primary btn-add-empresa">
+                  <i class="fa fa-plus"></i> Agregar Nueva Empresa
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <?php if (isset($_GET['error']) and $_GET['error'] == '1'): ?>
+                <div class="alert alert-danger">Usuario Existente</div>
+              <?php endif; ?>
+
+              <div class="table-responsive">
+                <table class="table table-empresas-geofal">
+                  <thead>
+                    <tr>
+                      <th>Clave</th>
+                      <th>Razón social</th>
+                      <th>Teléfono</th>
+                      <th>Dirección</th>
+                      <th>Representante</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($mostrar_clientes_pagi as $m_clientes): ?>
+                      <tr id="eli<?php echo $m_clientes['id'] ?>">
+                        <td>
+                          <span class="text-geofal-orange"><?php echo htmlspecialchars($m_clientes['clave']) ?></span>
+                        </td>
+                        <td><?php echo htmlspecialchars($m_clientes['razon_social']) ?></td>
+                        <td><?php echo htmlspecialchars($m_clientes['telefono'] ?? '') ?></td>
+                        <td><?php echo htmlspecialchars($m_clientes['direccion'] ?? '') ?></td>
+                        <td><?php echo htmlspecialchars($m_clientes['representante']) ?></td>
+                        <td>
+                          <div class="btn-group-actions">
+                            <a href="<?= ruta ?>?pagina=clientes_editar&id=<?php echo $m_clientes['id'] ?>" class="btn btn-outline-primary btn-sm" title="Editar">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="#" onclick="eliminar_todo('<?php echo ruta ?>?pagina=clientes','<?php echo $m_clientes['id'] ?>','eliminar_clientes')" class="btn btn-danger btn-sm" title="Eliminar">
+                              <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a href="<?= ruta ?>?pagina=pdf&id=<?php echo $m_clientes['id'] ?>" class="btn btn-success btn-sm" title="Gestionar PDFs">
+                              <i class="fa fa-file-pdf-o"></i> PDFs
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pagination-wrapper">
+                <?= $inicio->paginador($reload, $page, $total_pages, $adjacents, ruta, @$_GET['pagina'], $numrows, $get_b, '2'); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php include("footer.php"); ?>
+</body>
+</html>

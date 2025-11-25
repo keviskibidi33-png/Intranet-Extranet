@@ -1,0 +1,38 @@
+<?php
+// ... existing code ...
+  public function for_pdf_editar()
+  {
+    $sql = $this->consultas(
+      "select * from pdf where id ='" . $_POST['id'] . "'"
+    );
+   
+    if (!empty($_FILES['img1']['name']) and isset($_FILES['img1']['name'])) {
+      $extension1 = pathinfo($_FILES['img1']['name'], PATHINFO_EXTENSION);
+      $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
+      $img1 = $ran1 . '.' . $extension1;
+      move_uploaded_file($_FILES['img1']['tmp_name'], '../publico/img_data/' . $img1);
+    } else {
+      $img1 = $sql[0]['pdf'];
+    }
+
+
+    $stmt = $this->datab->prepare("UPDATE pdf set 
+		pdf=?,
+		titulo=? 
+		where id=?
+		");
+    $stmt->bindParam(1, $img1);
+    $stmt->bindParam(2, $_POST['titulo']); 
+    $stmt->bindParam(3, $_POST['id']);
+    $stmt->execute();
+    
+    // Obtener id_user del PDF para redirigir correctamente
+    $id_user = isset($sql[0]['id_user']) ? $sql[0]['id_user'] : '';
+    if (!empty($id_user)) {
+      header('Location:' . ruta . '?pagina=pdf&id=' . $id_user);
+    } else {
+      header('Location:' . ruta . '?pagina=pdf');
+    }
+    exit;
+  }
+// ... existing code ...

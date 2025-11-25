@@ -1,0 +1,146 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+
+<head>
+
+  <?php include("head.php"); ?>
+
+
+</head>
+
+<body>
+
+
+
+
+  <!-- Left Panel -->
+
+  <?php include("header_left.php"); ?>
+  <div id="right-panel" class="right-panel">
+
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+
+
+    <div class="breadcrumbs">
+      <div class="col-sm-4">
+        <div class="page-header  ">
+          <div class="page-title">
+            <h1>ordenes</h1>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+      <form action="<?= ruta ?>" style="display: inline-block;float: right">
+                          <input type="hidden" class="form-control" name="pagina" value="<?php echo $_GET['pagina'] ?>">
+                          <input type="hidden" name="p" value="1">
+                          <div class="input-group mt-3">
+                            <div class="input-group-prepend">
+                              <?php if (!empty($_GET['b']) and isset($_GET['b'])) { ?>
+                                <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>" class="btn btn-outline-secondary">Todos</a>
+                              <?php } ?>
+                            </div>
+                            <input type="text" class="form-control" name="b" placeholder="Buscar" value="<?php echo $get_b2 ?>">
+                            <div class="input-group-prepend">
+                              <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search "></i></button>
+                            </div>
+                          </div>
+                        </form>
+        <div class="page-header float-right">
+          <div class="page-title">
+            
+             
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <!-- Content Row -->
+      <div class="row">
+        <!-- Pending Requests Card Example -->
+        <div class="col-12  mb-4">
+          <div class="card  shadow h-100 p-3">
+            <div id="">
+              <div class="">
+
+
+
+
+                <div class="row mt-2">
+                  <div class="col-lg-12">
+                    <table class="table  ">
+                      <thead>
+                        <tr class="  ">
+                          <th>Acción</th>
+                          <th>Fecha</th>
+                          <th>Hora</th>
+                          <th>Código</th>
+                          <th>Total</th>
+                          <th>Cliente</th>
+                          <th>Dni</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <?php foreach ($mostrar_ordenes_pagi as $m_ordenes) { ?>
+                          <tr id="eli<?php echo $m_ordenes['id'] ?>">
+                            <td>
+                              <div class="btn-group">
+                             
+                                <a href="#" 
+                                onclick="eliminar_todo('<?php echo ruta ?>?pagina=ordenes','<?php echo $m_ordenes['id'] ?>','eliminar_ordenes')" 
+                                 class="btn btn-danger btn-sm" style="padding: 4px 10px;">
+                                  <i class="fa fa-trash-o"></i>
+                                </a>
+
+                              </div>
+                            </td>
+                           
+                            
+                            <td><?php echo $m_ordenes['fecha'] ?></td>
+                            <td><?php echo $m_ordenes['hora'] ?></td>
+                            <td><?php echo $m_ordenes['codigo'] ?></td>
+                            <td><?php echo $m_ordenes['total'] ?></td>
+                            <td><?php echo $m_ordenes['nombre'] ?></td>
+                            <td><?php echo $m_ordenes['dni'] ?></td>  
+
+
+
+                          <?php } ?>
+                          </tr>
+                      </tbody>
+                    </table>
+
+                    <?= $inicio->paginador($reload, $page, $total_pages, $adjacents, ruta, @$_GET['pagina'], $numrows, $get_b, '2'); ?>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+  </div>
+  <?php include("footer.php"); ?>
+</body>
+
+</html>

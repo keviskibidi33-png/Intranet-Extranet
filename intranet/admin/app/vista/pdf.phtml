@@ -1,0 +1,134 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="es">
+<!--<![endif]-->
+
+<head>
+  <?php include("head.php"); ?>
+  <link rel="stylesheet" href="<?php echo ruta ?>app/css/geofal-redesign.css">
+</head>
+
+<body>
+  <!-- Left Panel -->
+  <?php include("header_left.php"); ?>
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+
+    <!-- Botón Volver -->
+    <div class="back-button-section">
+      <a href="<?= ruta ?>?pagina=clientes" class="btn-volver">
+        <i class="fa fa-arrow-left"></i> Volver
+      </a>
+    </div>
+
+    <!-- Banner de Empresa -->
+    <?php if (isset($razon_social) && !empty($razon_social)): ?>
+      <div class="empresa-banner">
+        <div class="empresa-banner-content">
+          <h2><?php echo strtoupper(htmlspecialchars($razon_social)) ?></h2>
+        </div>
+      </div>
+    <?php endif; ?>
+
+    <!-- Search and Add Section - Basado en imágenes intranetdesing -->
+    <div class="search-add-section">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="search-add-container pdf-actions-layout">
+              <!-- Botón Agregar PDF (Verde) - IZQUIERDA -->
+              <div class="add-button-container">
+                <a href="<?= ruta ?>?pagina=pdf_agregar&id=<?php echo $_GET['id'] ?>" class="btn-add-pdf-verde">
+                  <i class="fa fa-plus"></i> Agregar Nuevo PDF
+                </a>
+              </div>
+              
+              <!-- Barra de búsqueda - DERECHA -->
+              <form action="<?= ruta ?>" method="get" class="search-form">
+                <input type="hidden" name="pagina" value="<?php echo $_GET['pagina'] ?>">
+                <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+                <input type="hidden" name="p" value="1">
+                <div class="input-group-search">
+                  <?php if (!empty($_GET['b']) and isset($_GET['b'])): ?>
+                    <a href="<?= ruta ?>?pagina=<?php echo $_GET['pagina'] ?>&id=<?php echo $_GET['id'] ?>" class="btn btn-outline-secondary btn-todos">Todos</a>
+                  <?php endif; ?>
+                  <input type="text" class="form-control-search" name="b" placeholder="Buscar PDF" value="<?php echo $get_b2 ?>">
+                  <button class="btn btn-search" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-empresas-geofal">
+                  <thead>
+                    <tr>
+                      <th>ACCIÓN</th>
+                      <th>TÍTULO</th>
+                      <th>ESTADO</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if (empty($mostrar_pdf_pagi) || count($mostrar_pdf_pagi) == 0): ?>
+                      <tr>
+                        <td colspan="3" style="text-align: center; padding: 40px; color: var(--gray-500);">
+                          No hay PDFs registrados
+                        </td>
+                      </tr>
+                    <?php else: ?>
+                      <?php foreach ($mostrar_pdf_pagi as $m_pdf): ?>
+                        <tr id="eli<?php echo $m_pdf['id'] ?>">
+                          <td>
+                            <div class="btn-group-actions">
+                              <a href="<?= ruta ?>?pagina=pdf_editar&id=<?php echo $m_pdf['id'] ?>" class="btn btn-outline-primary btn-sm" title="Editar">
+                                <i class="fa fa-pencil"></i>
+                              </a>
+                              <a href="#" onclick="eliminar_todo('<?php echo ruta ?>?pagina=pdf&id=<?php echo $_GET['id'] ?>','<?php echo $m_pdf['id'] ?>','eliminar_pdf')" class="btn btn-danger btn-sm" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                              </a>
+                            </div>
+                          </td>
+                          <td><?php echo htmlspecialchars($m_pdf['titulo']) ?></td>
+                          <td>
+                            <?php 
+                            // Estado según especificaciones: "No leído" (rojo) o "Descargado" (verde)
+                            // Si tiene estado 1 o vista 1, está descargado
+                            if (($m_pdf['estado'] == '1' || $m_pdf['vista'] == '1')): 
+                            ?>
+                              <span class="badge-estado badge-descargado">Descargado</span>
+                            <?php else: ?>
+                              <span class="badge-estado badge-no-leido">No leído</span>
+                            <?php endif; ?>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php include("footer.php"); ?>
+</body>
+</html>

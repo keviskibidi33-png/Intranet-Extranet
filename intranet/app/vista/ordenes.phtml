@@ -1,0 +1,189 @@
+<!doctype html>
+
+<html>
+
+
+
+<head>
+
+
+
+
+
+  <?php include("head.php"); ?>
+
+
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+  <?php include("header.php"); ?>
+
+
+
+
+
+  <div class="container">
+
+
+
+
+
+
+
+    <div class="footer-widget-2 mt-50">
+
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-12 col-md-12 col-sm-12">
+
+            <h2 class="title text-center" style="color: #ffffff;" title="Laboratorio de suelos, Concreto y Asfalto – Geofal.">Resultados</h2>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+    <table class="table">
+
+      <thead>
+
+        <tr>
+
+          <th class="order-id">N°</th>
+
+          <th class="order-date">Título</th>
+
+          <th class="order-status">PDF</th>
+
+
+
+          <th class="order-status">Estado</th>
+
+          <th class="order-status">Vista</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <?php $i = '0';
+
+        foreach ($mostrar_ordenes as  $m_ordenes) {
+
+          $i++;
+
+        ?>
+
+          <tr>
+
+            <td class="order-id"><?php echo $i ?></td>
+
+            <td class="order-date"><?php echo $m_ordenes['titulo'] ?></td>
+
+            <td class="order-date">
+
+              <a class="btn btn-success btn-sm" style="color: #fff;" href="<?= ruta ?>publico/img_data/<?php echo $m_ordenes['pdf'] ?>" onclick="visto('<?php echo ruta ?>','<?php echo $m_ordenes['id'] ?>')" target="_blank">Ver pdf</a>
+
+
+
+            </td>
+
+
+
+
+
+
+
+            <td class="order-date" id="estado_ok<?php echo $m_ordenes['id'] ?>">
+
+
+
+              <?php if ($m_ordenes['estado'] == '1') { ?>
+
+                <div class="btn btn-outline-success btn-sm" style="color: #5cb85c; border:solid 1px #5cb85c"> APROBADO</div>
+
+              <?php } else if ($m_ordenes['estado'] == '0') {  ?>
+
+                <div class="btn btn-outline-success btn-sm" style="color: #d9534f; border:solid 1px #d9534f;"> OBSERVADO</div>
+
+              <?php } else { ?>
+
+                <div class="btn btn-success btn-sm" style="color: #fff; cursor: pointer;" onclick="estado('<?php echo ruta ?>','<?php echo $m_ordenes['id'] ?>','1')">APROBADO</div>
+
+                <div class="btn btn-danger btn-sm" style="color: #fff; cursor: pointer;" onclick="estado('<?php echo ruta ?>','<?php echo $m_ordenes['id'] ?>','0')">OBSERVADO </div>
+
+
+
+              <?php } ?>
+
+            </td>
+
+            <td class="order-date" id="vista_ok<?php echo $m_ordenes['id'] ?>">
+
+              <?php if (isset($m_ordenes['vista']) and $m_ordenes['vista'] == '1') { ?>
+
+                <img src="<?= ruta ?>admin/publico/img/check.png" width="30" alt="">
+
+              <?php } else { ?>
+
+
+
+                <img src="<?= ruta ?>publico/img/check_x.jpg" width="30" alt="">
+
+              <?php }  ?>
+
+            </td>
+
+
+
+          </tr>
+
+
+
+        <?php } ?>
+
+      </tbody>
+
+
+
+
+
+    </table>
+
+  </div>
+
+
+
+  <?php include("carusel.php"); ?>
+
+
+
+
+
+  <?php include("footer.php"); ?>
+
+</body>
+
+
+
+</html>

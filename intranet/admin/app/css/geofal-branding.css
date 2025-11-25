@@ -1,0 +1,95 @@
+/**
+ * Branding GEOFAL - Colores y estilos corporativos
+ * Color principal: #f34d23 (Naranja Geofal)
+ */
+
+:root {
+    --geofal-orange: #f34d23;
+    --geofal-orange-hover: #d43e1a;
+    --geofal-blue: #1E3A5F;
+    --geofal-blue-light: #2C5282;
+    --geofal-turquoise: #4ECDC4;
+    --text-primary: #333333;
+    --text-secondary: #6c757d;
+    --bg-white: #ffffff;
+    --bg-light: #f8f9fa;
+    --border-color: #dee2e6;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+}
+
+/* Botones con branding Geofal */
+.btn-geofal {
+    background-color: var(--geofal-orange);
+    border-color: var(--geofal-orange);
+    color: white;
+}
+
+.btn-geofal:hover {
+    background-color: var(--geofal-orange-hover);
+    border-color: var(--geofal-orange-hover);
+    color: white;
+}
+
+.btn-outline-geofal {
+    color: var(--geofal-orange);
+    border-color: var(--geofal-orange);
+}
+
+.btn-outline-geofal:hover {
+    background-color: var(--geofal-orange);
+    border-color: var(--geofal-orange);
+    color: white;
+}
+
+/* Estados binarios - Píldoras de color */
+.badge-no-leido {
+    background-color: var(--danger-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-descargado {
+    background-color: var(--success-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Sidebar con branding */
+.sidebar-geofal {
+    background: linear-gradient(180deg, var(--geofal-blue) 0%, var(--geofal-blue-light) 100%);
+}
+
+/* Tablas modernas */
+.table-modern {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-modern thead th {
+    background-color: var(--bg-light);
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 12px 15px;
+}
+
+.table-modern tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table-modern tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table-modern tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+

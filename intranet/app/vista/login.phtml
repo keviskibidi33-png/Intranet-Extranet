@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sistema de logistica </title>
+
+<link rel="stylesheet" href="<?php echo ruta?>include/css/login.css">
+
+
+</head>
+
+<body>
+
+
+ 
+
+<div class="container">
+
+<form action="<?php echo ruta?>login/" method="post">
+    <h1>
+       Iniciar Sesión
+    </h1>
+     <?php 
+if(isset($_GET['error'])){
+	$error=$_GET['error'];
+}else{
+	$error='0';
+}
+if(isset($_GET['b'])){
+	$b_get=$_GET['b'];
+}else{
+	$b_get='0';
+}	 
+	 if($error=='error'){?>
+<div class="alert alert-danger" role="alert"> Tú contraseña o rut esta mal escrito, intentalo nuevamente</div>
+<?php }?>
+    <div class="form-content">
+      <input id="user-name" placeholder="DNI" name="dni" type="text" />
+      <input type="hidden" name="login" value="ok"> <input id="" name="r" type="hidden" value="<?=$b_get;?>" />
+      <input id="password" placeholder="Contraseña" name="clave" type="password" />
+     
+      <br />
+      <button class="button" type="submit">
+       Ingresar
+      </button>
+      <br />
+      <div class="signup-message">
+  
+      </div>
+    </div>
+  </form>
+
+
+</div>
+
+
+
+
+
+
+</body>
+</html>

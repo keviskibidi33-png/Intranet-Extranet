@@ -1,0 +1,493 @@
+/**
+ * Estilos GEOFAL para Admin Panel - EXACTAMENTE como en las imágenes
+ * Color principal: #f34d23 (Naranja Geofal)
+ */
+
+/* ============================================
+   SIDEBAR - Fondo gris oscuro EXACTO
+   ============================================ */
+aside.left-panel.geofal-sidebar-dark,
+#left-panel.geofal-sidebar-dark,
+aside.left-panel,
+#left-panel {
+  background: #272c33 !important;
+  min-height: 100vh;
+  width: 280px !important;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  padding: 0 !important;
+}
+
+#left-panel .navbar {
+  background: #272c33 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#left-panel .navbar-header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #4e4e52 !important;
+}
+
+#left-panel .navbar-toggler {
+  color: #fff !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+#left-panel .navbar-toggler i {
+  color: #fff !important;
+}
+
+#left-panel .main-menu {
+  padding: 20px 0 !important;
+}
+
+/* Logo Geofal en sidebar */
+.geofal-logo-sidebar {
+  text-align: center;
+  padding: 30px 20px 20px;
+  margin-bottom: 10px;
+}
+
+.geofal-logo-sidebar img,
+.geofal-logo-sidebar .geofal-logo-img {
+  max-width: 140px !important;
+  height: auto;
+  background: transparent !important;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.geofal-tagline-sidebar {
+  font-size: 12px;
+  color: #9496a1 !important;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Menú del sidebar - EXACTO como imagen */
+.geofal-menu,
+#left-panel .nav.navbar-nav.geofal-menu,
+#left-panel .nav.navbar-nav {
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.geofal-menu .menu-item,
+#left-panel .nav.navbar-nav li.menu-item,
+#left-panel .nav.navbar-nav li {
+  margin: 0 !important;
+  border-left: 3px solid transparent;
+}
+
+.geofal-menu .menu-item a,
+#left-panel .nav.navbar-nav li.menu-item a,
+#left-panel .nav.navbar-nav li a {
+  display: flex !important;
+  align-items: center;
+  padding: 15px 20px !important;
+  color: #9496a1 !important;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.geofal-menu .menu-item a:hover,
+#left-panel .nav.navbar-nav li.menu-item a:hover,
+#left-panel .nav.navbar-nav li a:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #fff !important;
+}
+
+.geofal-menu .menu-item.active,
+#left-panel .nav.navbar-nav li.menu-item.active,
+#left-panel .nav.navbar-nav li.active {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-left-color: #f34d23 !important;
+}
+
+.geofal-menu .menu-item.active a,
+#left-panel .nav.navbar-nav li.menu-item.active a,
+#left-panel .nav.navbar-nav li.active a {
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.geofal-menu .menu-icon,
+#left-panel .nav.navbar-nav .menu-icon {
+  width: 20px;
+  margin-right: 12px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.geofal-menu-divider {
+  margin: 15px 20px !important;
+  border-color: #4e4e52 !important;
+  border-top: 1px solid #4e4e52 !important;
+}
+
+#left-panel .menu-title {
+  display: none !important;
+}
+
+/* Ajustar right-panel cuando sidebar es fijo */
+.right-panel {
+  margin-left: 280px !important;
+  transition: margin-left 0.3s ease;
+  width: calc(100% - 280px) !important;
+}
+
+/* ============================================
+   HEADER/NAVBAR
+   ============================================ */
+.header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #dee2e6;
+  padding: 15px 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-left: 280px !important;
+}
+
+.menutoggle {
+  color: #6c757d;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
+}
+
+.menutoggle:hover {
+  color: #f34d23;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.notification-icon {
+  color: #6c757d;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.notification-icon:hover {
+  color: #f34d23;
+}
+
+.user-avatar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1E3A5F;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.user-name-header {
+  color: #6c757d;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-menu {
+  min-width: 180px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 8px 0;
+  margin-top: 10px;
+}
+
+.user-menu .nav-link {
+  padding: 10px 20px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.user-menu .nav-link:hover {
+  background-color: #f8f9fa;
+  color: #f34d23;
+}
+
+.user-menu .nav-link i {
+  width: 18px;
+}
+
+/* ============================================
+   PÁGINA EMPRESAS - EXACTO como imagen
+   ============================================ */
+.breadcrumbs {
+  margin-left: 280px !important;
+  background: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+  padding: 20px 30px;
+}
+
+.breadcrumbs h1 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #333 !important;
+  margin: 0 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Botón Agregar Nueva Empresa - EXACTO */
+.btn-primary[style*="background-color: #f34d23"],
+a.btn-primary[style*="background-color: #f34d23"] {
+  background-color: #f34d23 !important;
+  border-color: #f34d23 !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: all 0.3s ease;
+}
+
+.btn-primary[style*="background-color: #f34d23"]:hover,
+a.btn-primary[style*="background-color: #f34d23"]:hover {
+  background-color: #d43e1a !important;
+  border-color: #d43e1a !important;
+  color: white !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(243, 77, 35, 0.3);
+}
+
+/* Búsqueda */
+.input-group .form-control {
+  border: 1px solid #ced4da !important;
+  border-radius: 4px !important;
+  padding: 8px 12px !important;
+}
+
+.input-group-prepend .btn-outline-secondary,
+.input-group-append .btn-outline-secondary {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: white !important;
+  padding: 8px 15px !important;
+}
+
+.input-group-prepend .btn-outline-secondary:hover,
+.input-group-append .btn-outline-secondary:hover {
+  background-color: #5a6268 !important;
+  border-color: #5a6268 !important;
+  color: white !important;
+}
+
+/* ============================================
+   TABLA EMPRESAS - EXACTO como imagen
+   ============================================ */
+.table-empresas-geofal,
+.table {
+  width: 100% !important;
+  margin: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background-color: #fff !important;
+}
+
+.table-empresas-geofal thead,
+.table thead {
+  background-color: #f8f9fa !important;
+}
+
+.table-empresas-geofal thead th,
+.table thead th {
+  background-color: #f8f9fa !important;
+  border-bottom: 2px solid #dee2e6 !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  padding: 15px 12px !important;
+  text-align: left !important;
+  font-size: 14px !important;
+  white-space: nowrap;
+  border-top: none !important;
+}
+
+.table-empresas-geofal tbody tr,
+.table tbody tr {
+  border-bottom: 1px solid #e9ecef !important;
+  transition: background-color 0.2s ease;
+}
+
+.table-empresas-geofal tbody tr:hover,
+.table tbody tr:hover {
+  background-color: #f8f9fa !important;
+}
+
+.table-empresas-geofal tbody td,
+.table tbody td {
+  padding: 12px !important;
+  vertical-align: middle !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  border-top: none !important;
+}
+
+/* Botones de acción - EXACTOS como imagen */
+.btn-outline-primary {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: white !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0056b3 !important;
+  border-color: #0056b3 !important;
+  color: white !important;
+}
+
+.btn-danger {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: white !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.btn-danger:hover {
+  background-color: #c82333 !important;
+  border-color: #bd2130 !important;
+  color: white !important;
+}
+
+.btn-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  white-space: nowrap;
+}
+
+.btn-success:hover {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+  color: white !important;
+}
+
+/* Paginación */
+.pagination {
+  margin: 0 !important;
+  justify-content: center !important;
+}
+
+.pagination .page-item .page-link {
+  color: #6c757d !important;
+  border-color: #dee2e6 !important;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #f34d23 !important;
+  border-color: #f34d23 !important;
+  color: white !important;
+}
+
+.pagination .page-item .page-link:hover {
+  color: #f34d23 !important;
+  background-color: #f8f9fa !important;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  aside.left-panel,
+  #left-panel {
+    width: 100% !important;
+    position: relative !important;
+  }
+
+  .right-panel,
+  .header,
+  .breadcrumbs {
+    margin-left: 0 !important;
+  }
+}
+
+/* ============================================
+   ESTADOS BINARIOS
+   ============================================ */
+.badge-no-leido {
+  background-color: #dc3545;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.badge-descargado {
+  background-color: #28a745;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* ============================================
+   BARRA AZUL CON NOMBRE DE EMPRESA
+   ============================================ */
+.company-title-bar {
+  background: #1E3A5F;
+  color: white;
+  padding: 20px 30px;
+  margin: 0;
+  margin-left: 280px !important;
+}
+
+.company-title-bar h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}

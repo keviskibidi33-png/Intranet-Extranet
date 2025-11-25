@@ -1,0 +1,115 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+
+<head>
+
+  <?php include("head.php"); ?>
+
+
+</head>
+
+<body>
+
+
+
+
+  <!-- Left Panel -->
+
+  <?php include("header_left.php"); ?>
+
+  <!-- Left Panel -->
+
+  <!-- Right Panel -->
+
+  <div id="right-panel" class="right-panel">
+
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+
+    <div class="container-fluid">
+
+
+      <div class="row">
+
+
+        <div class="col-12  mb-4">
+          <div class="card  shadow h-100 p-3">
+
+
+            <div id="">
+              <div class="">
+                <div class="row">
+                  <div class="col">
+                    <div style="float: left">
+                      <a href="<?= ruta ?>?pagina=productos" class="fa fa-reply ico_plus"></a>
+                      <h2 style="display: inline-block ; position:relative; top:6px"><b>Editar</b> / productos</h2>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+
+
+                <form action="<?= ruta ?>?pagina=productos_editar" method="post" enctype="multipart/form-data">
+                  <div class="row">
+
+
+
+
+                    <div class="col-4">
+                      <div class="form-group">
+                      <img src="<?=ruta?>publico/img_data/<?php echo $mostrar_productos_id[0]['img'] ?>" style="width: 100px;">
+                        <input type="file" class="form-control" name="img" value="<?php echo $mostrar_productos_id[0]['img'] ?>" >
+                      </div>
+                    </div>
+
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Precio</label>
+                        <input type="text" class="form-control" name="precio" value="<?php echo $mostrar_productos_id[0]['precio'] ?>" required>
+                      </div>
+                    </div>
+
+
+
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Detalle</label>
+                        <input type="text" class="form-control" name="detalle" value="<?php echo $mostrar_productos_id[0]['detalle'] ?>" required>
+                      </div>
+                    </div>
+
+
+
+ 
+
+
+
+
+
+                    <div class="col-12">
+                      <hr>
+                      <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
+                      <input type="hidden" name="for_productos_editar" value="ok">
+                      <button class="btn btn-success mt_btn btn-block ">Guardar</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /#right-panel -->
+
+
+  <?php include("footer.php"); ?>
+</body>
+
+</html>

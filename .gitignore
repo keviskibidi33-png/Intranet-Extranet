@@ -1,0 +1,36 @@
+# WordPress
+wp-admin/
+wp-content/
+wp-includes/
+wp-*.php
+xmlrpc.php
+license.txt
+readme.html
+
+# Configuración local
+config/config.local.php
+*.ini
+
+# Archivos temporales
+*.log
+*.tmp
+error_log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Node modules (si hay)
+node_modules/
+
+# Vendor (si se usa composer)
+vendor/
+
+# Archivos de backup
+*.backup
+*.bak
+*.old
+

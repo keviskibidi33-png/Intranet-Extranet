@@ -1,0 +1,82 @@
+<?php
+
+// Asegurar que sistema.php esté incluido antes del modelo
+if (!class_exists('Conectar')) {
+    // Intentar incluir sistema.php desde diferentes rutas
+    $rutasSistema = [
+        __DIR__ . '/../../config/sistema.php',
+        'config/sistema.php',
+        '../config/sistema.php'
+    ];
+    
+    foreach ($rutasSistema as $ruta) {
+        if (file_exists($ruta)) {
+            require_once($ruta);
+            break;
+        }
+    }
+}
+
+include ("app/modelo/inicioModelo.php");
+
+include("keys.php");
+
+$inicio = new Inicio();
+
+
+
+if(isset($_SESSION['id_geo'])){
+
+
+
+
+
+ 
+
+  if(isset($_POST["pro_visto"]) and $_POST["pro_visto"]=="ok"){
+
+    $inicio->pro_visto();
+
+    }
+
+    
+
+     
+
+  if(isset($_POST["pro_estado"]) and $_POST["pro_estado"]=="ok"){
+
+    $inicio->pro_estado();
+
+    }
+
+    
+
+    
+
+
+
+
+
+$mostrar_ordenes=$inicio->mostrar_ordenes();
+
+
+
+require_once("app/vista/ordenes_2.phtml");
+
+
+
+
+
+}else{
+
+
+
+  header("Location:" . ruta . 'cliente');
+
+
+
+}
+
+
+
+?>

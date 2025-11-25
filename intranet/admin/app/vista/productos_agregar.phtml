@@ -1,0 +1,108 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+
+<head>
+
+  <?php include("head.php"); ?>
+
+
+</head>
+
+<body>
+
+
+
+
+  <!-- Left Panel -->
+
+  <?php include("header_left.php"); ?>
+
+  <!-- Left Panel -->
+
+  <!-- Right Panel -->
+
+  <div id="right-panel" class="right-panel">
+
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+    <div class="container-fluid">
+          <style type="text/css">
+            #tooltip {
+              padding: 10px 15px;
+              position: absolute;
+              font-size: 14px;
+              font-family: Helvetica;
+              color: #4E4E4E;
+              background: #C4E424;
+              z-index: 100;
+            }
+          </style>
+          <div class="row">
+            <div class="col-12  mb-4">
+              <div class="card  shadow h-100 p-3">
+                <div id="">
+                  <div class="">
+                    <div class="row">
+                      <div class="col">
+                        <div style="float: left">
+                          <a href="<?= ruta ?>?pagina=productos" class="fa fa-reply ico_plus"></a>
+                          <h2 style="display: inline-block ; position:relative; top:6px"><b>Agregar</b> / productos</h2>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <form action="<?= ruta ?>?pagina=productos_agregar" method="post" enctype="multipart/form-data">
+                      <div class="row">
+                     
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">img</label>
+                            <input type="file" class="form-control" name="img" required>
+                          </div>
+                        </div>
+                      
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Precio</label>
+                            <input type="text" class="form-control" name="precio" required>
+                          </div>
+                        </div>
+                        
+
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">detalle</label>
+                            <input type="text" class="form-control" name="detalle" required>
+                          </div>
+                        </div>
+
+
+ 
+
+                          <div class="col-12">
+                            <hr>
+
+                            <input type="hidden" name="for_productos_agregar" value="ok">
+                            <button class="btn btn-success mt_btn btn-block ">Guardar</button>
+                          </div>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+  </div>
+  <?php include("footer.php"); ?>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+/* CSS Document */
+
+.ncon {
+  float: left;
+}
+
+.pagination {
+  float: right;
+}
+
+.form-check {
+  position: relative;
+  display: block;
+  padding-left: 0px !important;
+}
+.form-check-input {
+  position: absolute;
+  margin-top: 9px !important;
+  margin-left: 20px !important;
+}
+.form-check-label {
+  padding-left: 30px;
+  margin-bottom: 0 !important;
+  margin-left: 9px !important;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: solid 1px #bbb;
+  padding-right: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+@media screen and (max-width: 1200px) {
+}
+@media screen and (max-width: 1064px) {
+}
+@media screen and (max-width: 1024px) {
+}
+@media screen and (max-width: 992px) {
+}
+@media screen and (max-width: 768px) {
+}
+@media screen and (max-width: 680px) {
+}
+@media screen and (max-width: 480px) {
+}
+@media screen and (max-width: 360px) {
+}

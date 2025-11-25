@@ -1,0 +1,136 @@
+<!doctype html>
+
+<html>
+
+
+
+<head>
+
+
+
+  <?php include("head_2.php"); ?>
+
+
+
+
+
+</head>
+
+
+
+<body >
+
+ 
+
+<?php include("header_2.php"); ?>
+
+<style>
+
+  .login-content {
+
+    max-width: 400px; /* Ajusta el ancho del formulario */
+
+    width: 100%;
+
+    margin: auto; /* Centrar */
+
+}
+
+
+
+</style>
+
+
+
+<div class="container">
+
+  <div class=" mt-50" style="margin-top: 60px !important;">
+
+    <div class="container">
+
+      <div class="row">
+
+        
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
+
+          <h2 class="title text-center" style="color:rgb(99, 96, 96);" title="Laboratorio de suelos, Concreto y Asfalto – Geofal.">Iniciar Sesión</h2> <br><br>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="sufee-login d-flex align-content-center flex-wrap">
+
+    <div class="container d-flex justify-content-center">
+
+        <div class="login-content w-100" style="max-width: 400px;"> <!-- Ajusta el ancho aquí -->
+
+            <div class="login-form">
+
+                <form action="#" method="post" id="for_login" class="formulario_login" onsubmit="login_2('<?= ruta ?>',event)">
+
+                    <div class="form-group">
+
+                        <label>Usuario / RUC *</label>
+
+                        <input type="text" class="form-control" name="ruc" id="ruc" required="" autocomplete="off" style="border-radius: 5px;">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Contraseña *</label>
+
+                        <input type="password" class="form-control" name="clave" id="password" required="" style="border-radius: 5px;">
+
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30 w-100" style="width: 100%;
+
+    color: #fff;
+
+    text-transform: uppercase; padding: 10px;">Ingresar</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+<?php include("carusel_2.php"); ?>
+
+<!-- Espacio considerable antes del footer -->
+<div style="min-height: 80px; margin: 40px 0;"></div>
+
+
+
+
+
+<?php include("footer_2.php"); ?>
+
+</body>
+
+
+
+</html>

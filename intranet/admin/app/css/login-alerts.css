@@ -1,0 +1,52 @@
+/**
+ * Estilos para mensajes de alerta en el login
+ * Asegura que los mensajes sean visibles y legibles
+ */
+
+.login-form .alert {
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    position: relative;
+    z-index: 10;
+}
+
+.login-form .alert i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.login-form .alert-danger {
+    background-color: #f8d7da;
+    border: 2px solid #dc3545;
+    color: #721c24;
+}
+
+.login-form .alert-danger strong {
+    color: #721c24;
+    font-weight: 600;
+}
+
+.login-form .alert-warning {
+    background-color: #fff3cd;
+    border: 2px solid #ffc107;
+    color: #856404;
+}
+
+.login-form .alert-warning strong {
+    color: #856404;
+    font-weight: 600;
+}
+
+/* Asegurar visibilidad en todos los casos */
+.login-form .alert[role="alert"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
