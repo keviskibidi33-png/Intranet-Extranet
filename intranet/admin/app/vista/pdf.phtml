@@ -85,12 +85,13 @@
                       <th>ACCIÓN</th>
                       <th>TÍTULO</th>
                       <th>ESTADO</th>
+                      <th>FECHA SUBIDA</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php if (empty($mostrar_pdf_pagi) || count($mostrar_pdf_pagi) == 0): ?>
                       <tr>
-                        <td colspan="3" style="text-align: center; padding: 40px; color: var(--gray-500);">
+                        <td colspan="4" style="text-align: center; padding: 40px; color: var(--gray-500);">
                           No hay PDFs registrados
                         </td>
                       </tr>
@@ -108,7 +109,7 @@
                             </div>
                           </td>
                           <td><?php echo htmlspecialchars($m_pdf['titulo']) ?></td>
-                          <td>
+                          <td class="estado-cell">
                             <?php 
                             // Estado según especificaciones: "No leído" (rojo) o "Descargado" (verde)
                             // Si tiene estado 1 o vista 1, está descargado
@@ -118,6 +119,18 @@
                             <?php else: ?>
                               <span class="badge-estado badge-no-leido">No leído</span>
                             <?php endif; ?>
+                          </td>
+                          <td class="fecha-subida-cell">
+                            <?php 
+                            // Mostrar fecha de subida si existe, solo fecha (día/mes/año)
+                            if (isset($m_pdf['fecha_subida']) && !empty($m_pdf['fecha_subida'])) {
+                              $fecha_subida = date('d/m/Y', strtotime($m_pdf['fecha_subida']));
+                              echo '<span class="fecha-subida">' . $fecha_subida . '</span>';
+                            } else {
+                              // Si no hay fecha_subida, mostrar "N/A"
+                              echo '<span class="fecha-subida">N/A</span>';
+                            }
+                            ?>
                           </td>
                         </tr>
                       <?php endforeach; ?>

@@ -44,7 +44,7 @@ class Inicio extends Conectar
     $extension1 = strtolower(pathinfo($_FILES['img1']['name'], PATHINFO_EXTENSION));
     if ($extension1 !== 'pdf') {
       header('Location:' . ruta . '?pagina=pdf_agregar&id=' . $_POST['id'] . '&error=2');
-      exit;
+    exit;
     }
 
     // Validar tamaño (10MB máximo)
@@ -54,9 +54,9 @@ class Inicio extends Conectar
     }
 
     // Generar nombre único para el archivo
-    $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
-    $img1 = $ran1 . '.' . $extension1;
-    
+      $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
+      $img1 = $ran1 . '.' . $extension1;
+
     // Ruta de destino - Guardar en intranet/publico/img_data/ (como en producción)
     // Usar ruta absoluta basada en __DIR__ para asegurar que se guarde en el lugar correcto
     // __DIR__ = intranet/admin/app/modelo/
@@ -77,16 +77,42 @@ class Inicio extends Conectar
     }
 
     // Insertar en base de datos
+    // Preparar fecha_eliminacion (puede ser NULL)
+    $fecha_eliminacion = !empty($_POST['fecha_eliminacion']) ? $_POST['fecha_eliminacion'] : null;
+    $fecha_subida = date('Y-m-d H:i:s'); // Fecha y hora actual
+    
+    // Intentar insertar con fecha_subida, si el campo no existe, se omitirá
+    try {
     $stmt = $this->datab
-      ->prepare("insert into pdf (pdf,id_user,titulo,vista,estado) values(?,?,?,?,?)");
+        ->prepare("insert into pdf (pdf,id_user,titulo,vista,estado,fecha_eliminacion,fecha_subida) values(?,?,?,?,?,?,?)");
     $stmt->bindParam(1, $img1);
     $stmt->bindParam(2, $_POST['id']);
     $stmt->bindParam(3, $_POST['titulo']);
-    $vista = '0';
-    $estado = '0';
-    $stmt->bindParam(4, $vista);
-    $stmt->bindParam(5, $estado);
+      $vista = '0';
+      $estado = '0';
+      $stmt->bindParam(4, $vista);
+      $stmt->bindParam(5, $estado);
+      $stmt->bindParam(6, $fecha_eliminacion);
+      $stmt->bindParam(7, $fecha_subida);
     $stmt->execute();
+    } catch (PDOException $e) {
+      // Si el campo fecha_subida no existe, insertar sin él
+      if (strpos($e->getMessage(), 'fecha_subida') !== false) {
+        $stmt = $this->datab
+          ->prepare("insert into pdf (pdf,id_user,titulo,vista,estado,fecha_eliminacion) values(?,?,?,?,?,?)");
+        $stmt->bindParam(1, $img1);
+        $stmt->bindParam(2, $_POST['id']);
+        $stmt->bindParam(3, $_POST['titulo']);
+        $vista = '0';
+        $estado = '0';
+        $stmt->bindParam(4, $vista);
+        $stmt->bindParam(5, $estado);
+        $stmt->bindParam(6, $fecha_eliminacion);
+        $stmt->execute();
+      } else {
+        throw $e;
+      }
+    }
     
     // Redirigir con mensaje de éxito
     header('Location:' . ruta . '?pagina=pdf&id=' . $_POST['id'] . '&success=pdf_agregado');
@@ -117,7 +143,7 @@ class Inicio extends Conectar
       // Generar nombre único para el archivo
       $ran1 = substr(str_shuffle(str_repeat('0123456789', 5)), 0, 10);
       $img1 = $ran1 . '.' . $extension1;
-      
+
       // Ruta de destino - Guardar en intranet/publico/img_data/ (como en producción)
       // Usar ruta absoluta basada en __DIR__ para asegurar que se guarde en el lugar correcto
       // __DIR__ = intranet/admin/app/modelo/
@@ -141,16 +167,21 @@ class Inicio extends Conectar
       $img1 = $sql[0]['pdf'];
     }
 
+    // Preparar fecha_eliminacion (puede ser NULL)
+    $fecha_eliminacion = !empty($_POST['fecha_eliminacion']) ? $_POST['fecha_eliminacion'] : null;
+
     $stmt = $this->datab->prepare("UPDATE pdf set 
 		pdf=?,
-		titulo=? 
+		titulo=?,
+		fecha_eliminacion=?
 		where id=?
 		");
     $stmt->bindParam(1, $img1);
     $stmt->bindParam(2, $_POST['titulo']); 
-    $stmt->bindParam(3, $_POST['id']);
+    $stmt->bindParam(3, $fecha_eliminacion);
+    $stmt->bindParam(4, $_POST['id']);
     $stmt->execute();
-    
+
     // Obtener id_user del PDF para redirigir correctamente
     $id_user = isset($sql[0]['id_user']) ? $sql[0]['id_user'] : '';
     if (!empty($id_user)) {
@@ -175,9 +206,9 @@ class Inicio extends Conectar
         
         // Eliminar de la base de datos
         $stmt = $this->datab->prepare("DELETE FROM pdf WHERE id=?");
-        $stmt->bindValue(1, $_POST['id']);
-        $stmt->execute();
-        
+    $stmt->bindValue(1, $_POST['id']);
+    $stmt->execute();
+
         // Intentar eliminar el archivo físico si existe
         if (!empty($pdf_filename)) {
           // Buscar en la ubicación correcta: intranet/publico/img_data/
@@ -205,14 +236,14 @@ class Inicio extends Conectar
       // Si no es AJAX, redirigir como antes (compatibilidad)
       $id_user = isset($_POST['id_user']) ? $_POST['id_user'] : '';
       $stmt = $this->datab->prepare("DELETE FROM pdf WHERE id=?");
-      $stmt->bindValue(1, $_POST['id']);
-      $stmt->execute();
+    $stmt->bindValue(1, $_POST['id']);
+    $stmt->execute();
       if (!empty($id_user)) {
         header('Location:' . ruta . '?pagina=pdf&id=' . $id_user);
-      } else {
+    } else {
         header('Location:' . ruta . '?pagina=pdf');
       }
-      exit;
+    exit;
     }
   }
 
@@ -232,6 +263,37 @@ class Inicio extends Conectar
     $sql = $this->consultas(
       "SELECT * FROM pdf where id_user='$id'   $b order by id desc  "
     );
+    return $sql;
+  }
+
+  /**
+   * Obtener PDFs próximos a eliminar (próximos 7 días)
+   * Retorna array con información del PDF y del cliente
+   */
+  public function obtener_pdfs_proximos_eliminar()
+  {
+    // Calcular fecha límite (7 días desde hoy)
+    $fecha_limite = date('Y-m-d', strtotime('+7 days'));
+    $fecha_hoy = date('Y-m-d');
+    
+    // Consultar PDFs con fecha_eliminacion entre hoy y 7 días
+    $sql = $this->consultas(
+      "SELECT 
+        p.id,
+        p.titulo,
+        p.fecha_eliminacion,
+        p.id_user,
+        c.razon_social,
+        c.ruc
+      FROM pdf p
+      LEFT JOIN clientes c ON p.id_user = c.id
+      WHERE p.fecha_eliminacion IS NOT NULL
+        AND p.fecha_eliminacion >= '$fecha_hoy'
+        AND p.fecha_eliminacion <= '$fecha_limite'
+      ORDER BY p.fecha_eliminacion ASC
+      "
+    );
+
     return $sql;
   }
 
@@ -268,7 +330,7 @@ class Inicio extends Conectar
     $sql = $this->consultas(
       "select * from clientes where id ='" . $_POST['id'] . "'"
     );
-    $claven = $sql[0]['clave'];
+      $claven = $sql[0]['clave'];
 
     // Si se proporciona una nueva clave, guardarla en texto plano
     if (!empty($_POST['clave']) && $_POST['clave'] !== $sql[0]['clave']) {
@@ -276,12 +338,12 @@ class Inicio extends Conectar
     }
 
     $stmt = $this->datab->prepare("UPDATE clientes set 
-      ruc=?,
-      razon_social=?,
-      representante=?,
-      clave=? 
-      where id=?
-      ");
+		ruc=?,
+		razon_social=?,
+		representante=?,
+		clave=? 
+		where id=?
+		");
     $stmt->bindParam(1, $_POST['ruc']);
     $stmt->bindParam(2, $_POST['razon_social']);
     $stmt->bindParam(3, $_POST['representante']);
@@ -300,8 +362,8 @@ class Inicio extends Conectar
         // Eliminar de la base de datos
         $stmt = $this->datab->prepare("DELETE FROM clientes WHERE id=?");
         $stmt->bindValue(1, $_POST['id']);
-        $stmt->execute();
-        
+    $stmt->execute();
+
         header('Content-Type: application/json');
         echo json_encode(['estado' => '1', 'mensaje' => 'Empresa eliminada correctamente']);
         exit;
@@ -315,8 +377,8 @@ class Inicio extends Conectar
       $stmt = $this->datab->prepare("DELETE FROM clientes WHERE id=?");
       $stmt->bindValue(1, $_POST['id']);
       $stmt->execute();
-      header('Location:' . ruta . '?pagina=clientes');
-      exit;
+    header('Location:' . ruta . '?pagina=clientes');
+    exit;
     }
   }
 
@@ -366,7 +428,7 @@ class Inicio extends Conectar
     $stmt = $this->datab->prepare("UPDATE usuarios set 
       dni=?,
       clave=? 
-      where id=?
+		where id=?
       ");
     $stmt->bindParam(1, $_POST['dni']);
     $stmt->bindParam(2, $claven);
@@ -412,7 +474,7 @@ class Inicio extends Conectar
     // pages
     $pmin = ($page > $adjacents) ? ($page - $adjacents) : 1;
     $pmax = ($page < ($total_pages - $adjacents)) ? ($page + $adjacents) : $total_pages;
-    
+
     for ($i = $pmin; $i <= $pmax; $i++) {
       if ($i == $page) {
         $out .= "<li class='page-item active'><span class='page-link'>$i</span></li>";
@@ -437,7 +499,7 @@ class Inicio extends Conectar
     } else {
       $out .= "<li class='page-item disabled'><span class='page-link'>$nextlabel</span></li>";
     }
-    
+
     $out .= '</ul>';
     return $out;
   }
@@ -470,7 +532,7 @@ class Inicio extends Conectar
   {
     if ($bus == '0') {
       $b = '';
-    } else {
+      } else {
       $b = "where titulo like '%" . $bus . "%'";
     }
     $sql = $this->consultas("SELECT * from pdf $b order by id desc LIMIT $offset, $per_page");

@@ -57,5 +57,13 @@
 <!-- Scripts personalizados (requieren jQuery y Bootstrap) -->
 <script src="<?php echo ruta ?>app/js/funciones.js"></script>
 
+<!-- Definir variable ruta para JavaScript -->
+<script>
+  var ruta = '<?php echo ruta ?>';
+</script>
+
+<!-- Script de notificaciones (requiere jQuery) -->
+<script src="<?php echo ruta ?>app/js/notificaciones.js"></script>
+
 <!-- Script principal (requiere jQuery) -->
 <script src="<?php echo ruta ?>include/assets/js/main.js"></script>

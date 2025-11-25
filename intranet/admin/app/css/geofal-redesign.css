@@ -312,6 +312,16 @@ header#header {
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
+}
+
+/* Separar los dropdowns para que no interfieran */
+.user-area > .dropdown {
+  position: relative;
+}
+
+.user-area .dropdown.for-notification {
+  margin-right: 16px;
 }
 
 /* Ocultar el caret que Bootstrap agrega automáticamente */
@@ -984,12 +994,15 @@ header#header {
    ============================================ */
 .badge-estado {
   display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 8px 16px;
+  border-radius: 12px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  min-width: 100px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .badge-no-leido {
@@ -1000,6 +1013,36 @@ header#header {
 .badge-descargado {
   background-color: #28a745; /* Verde */
   color: #ffffff;
+}
+
+/* Columna de Estado - Mejorada y bien centrada */
+.estado-cell {
+  text-align: center !important;
+  vertical-align: middle;
+  padding: 16px 30px 16px 16px !important; /* Más padding a la derecha para separar de fecha */
+  width: 250px; /* Ancho fijo para mejor centrado */
+  min-width: 150px;
+}
+
+.estado-cell .badge-estado {
+  display: inline-block;
+  margin: 0 auto; /* Centrar el badge dentro de la celda */
+}
+
+/* Columna de Fecha de Subida */
+.fecha-subida-cell {
+  text-align: left !important;
+  vertical-align: middle;
+  padding: 16px 16px 16px 32px !important; /* Más padding a la izquierda para separar de estado */
+  white-space: nowrap;
+  min-width: 140px;
+}
+
+.fecha-subida {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-900);
 }
 
 /* Responsive */
@@ -1104,6 +1147,11 @@ header#header {
   border-bottom: 2px solid var(--border-color);
   text-align: left;
   white-space: nowrap;
+}
+
+/* Centrar header de columna ESTADO (ahora es la 3ra columna) */
+.table thead th:nth-child(3) {
+  text-align: center !important;
 }
 
 .table tbody tr {
@@ -1988,5 +2036,576 @@ label {
 
   .header {
     padding: 0 16px;
+  }
+}
+
+/* ============================================
+   NOTIFICACIONES
+   ============================================ */
+
+/* Icono de notificaciones */
+.notification-icon {
+  position: relative;
+  display: inline-block;
+  padding: 8px 12px;
+  color: var(--gray-600);
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-right: 16px;
+}
+
+.notification-icon:hover {
+  color: var(--primary-blue);
+}
+
+.notification-count {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 2px solid white;
+}
+
+/* Dropdown de notificaciones */
+.notification-dropdown {
+  min-width: 380px;
+  max-width: 380px;
+  max-height: 500px;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.notification-header {
+  padding: 16px;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.notification-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.notification-subtitle {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+/* Lista de notificaciones */
+.notification-list {
+  max-height: 350px;
+  overflow-y: auto;
+  background: var(--bg-white);
+}
+
+.notification-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* Wrapper de notificación para swipe */
+.notification-item-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.notification-item-wrapper:last-child {
+  border-bottom: none;
+}
+
+/* Item de notificación */
+.notification-item {
+  display: flex;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: background-color 0.2s;
+  position: relative;
+  z-index: 2;
+  background: white;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.notification-item:hover {
+  background-color: var(--bg-light);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.notification-item.swiping {
+  cursor: grabbing !important;
+  transition: transform 0.1s ease-out;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+.notification-item:not(.swiping) {
+  transition: transform 0.3s ease-out;
+}
+
+.notification-item.notification-hiding {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* Acción de eliminar (aparece al deslizar) */
+.notification-delete-action {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  background: linear-gradient(90deg, rgba(220, 53, 69, 0.95), #dc3545);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.notification-delete-action i {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.notification-delete-action span {
+  font-size: 10px;
+  text-align: center;
+  padding: 0 8px;
+  line-height: 1.2;
+}
+
+/* Urgencia: Urgente (hoy o mañana) */
+.notification-urgent {
+  border-left: 4px solid #dc3545;
+  background-color: #fff5f5;
+}
+
+.notification-urgent:hover {
+  background-color: #ffe5e5;
+}
+
+/* Urgencia: Advertencia (2-3 días) */
+.notification-warning {
+  border-left: 4px solid #ffc107;
+  background-color: #fffbf0;
+}
+
+.notification-warning:hover {
+  background-color: #fff8e5;
+}
+
+/* Urgencia: Info (4-7 días) */
+.notification-info {
+  border-left: 4px solid #17a2b8;
+  background-color: #f0f9ff;
+}
+
+.notification-info:hover {
+  background-color: #e0f2ff;
+}
+
+.notification-item-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+  border-radius: 8px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.notification-item-icon i {
+  font-size: 18px;
+  color: var(--primary-blue);
+}
+
+.notification-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-item-company {
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-item-date {
+  font-size: 11px;
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.notification-item-date i {
+  font-size: 10px;
+}
+
+/* Estados vacíos y errores */
+.notification-empty,
+.notification-error,
+.notification-loading {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.notification-empty i,
+.notification-error i {
+  font-size: 48px;
+  margin-bottom: 12px;
+  color: var(--gray-400);
+}
+
+.notification-error i {
+  color: #dc3545;
+}
+
+.notification-loading i {
+  color: var(--primary-blue);
+}
+
+.notification-empty p,
+.notification-error p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Footer de notificaciones */
+.notification-footer {
+  padding: 12px 16px;
+  background: var(--bg-light);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.notification-view-all {
+  font-size: 13px;
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.notification-view-all:hover {
+  text-decoration: underline;
+  color: var(--primary-blue-dark);
+}
+
+/* ============================================
+   PÁGINA DE GESTIÓN DE PDFs PRÓXIMOS A VENCER
+   ============================================ */
+
+/* Cajas de estadísticas */
+.stat-box {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box i {
+  font-size: 32px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.stat-box h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.stat-box p {
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+.stat-urgent {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.stat-urgent i,
+.stat-urgent h3,
+.stat-urgent p {
+  color: white;
+}
+
+.stat-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: white;
+}
+
+.stat-warning i,
+.stat-warning h3,
+.stat-warning p {
+  color: white;
+}
+
+.stat-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+}
+
+.stat-info i,
+.stat-info h3,
+.stat-info p {
+  color: white;
+}
+
+.stat-success {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  color: white;
+}
+
+.stat-success i,
+.stat-success h3,
+.stat-success p {
+  color: white;
+}
+
+/* Tabla de PDFs próximos a vencer */
+.table-pdfs-vencer {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table-pdfs-vencer thead th {
+  background: var(--primary-blue);
+  color: white;
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--primary-blue-dark);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table-pdfs-vencer tbody td {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.table-pdfs-vencer tbody tr:hover {
+  background: var(--bg-light);
+}
+
+/* Filas con colores según urgencia */
+.pdf-row-danger {
+  background: rgba(220, 53, 69, 0.05);
+  border-left: 4px solid #dc3545;
+}
+
+.pdf-row-urgent {
+  background: rgba(220, 53, 69, 0.08);
+  border-left: 4px solid #dc3545;
+}
+
+.pdf-row-warning {
+  background: rgba(255, 193, 7, 0.08);
+  border-left: 4px solid #ffc107;
+}
+
+.pdf-row-info {
+  background: rgba(23, 162, 184, 0.08);
+  border-left: 4px solid #17a2b8;
+}
+
+.pdf-row-success {
+  background: rgba(40, 167, 69, 0.05);
+  border-left: 4px solid #28a745;
+}
+
+/* Badges de urgencia */
+.badge-urgencia {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.badge-vencido {
+  background: #dc3545;
+  color: white;
+}
+
+.badge-urgent {
+  background: #dc3545;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.badge-warning {
+  background: #ffc107;
+  color: #333;
+}
+
+.badge-info {
+  background: #17a2b8;
+  color: white;
+}
+
+.badge-success {
+  background: #28a745;
+  color: white;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Badges de días restantes */
+.badge-dias {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  min-width: 80px;
+}
+
+.badge-dias.badge-vencido {
+  background: #dc3545;
+  color: white;
+}
+
+.badge-dias.badge-urgent {
+  background: #dc3545;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.badge-dias.badge-warning {
+  background: #ffc107;
+  color: #333;
+}
+
+.badge-dias.badge-info {
+  background: #17a2b8;
+  color: white;
+}
+
+.badge-dias.badge-success {
+  background: #28a745;
+  color: white;
+}
+
+/* Información de fechas */
+.fecha-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.fecha-info i {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.fecha-info strong {
+  display: block;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.fecha-info small {
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notification-dropdown {
+    min-width: 320px;
+    max-width: 320px;
+  }
+  
+  .stat-box {
+    margin-bottom: 15px;
+  }
+  
+  .table-pdfs-vencer {
+    font-size: 12px;
+  }
+  
+  .table-pdfs-vencer thead th,
+  .table-pdfs-vencer tbody td {
+    padding: 10px 8px;
   }
 }

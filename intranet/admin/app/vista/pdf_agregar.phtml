@@ -72,6 +72,13 @@
                         <input type="text" class="form-control-pdf" id="titulo" name="titulo" placeholder="Ingrese el título del documento" required>
                       </div>
 
+                      <!-- Campo de fecha de eliminación -->
+                      <div class="form-group">
+                        <label for="fecha_eliminacion" class="form-label-pdf">Fecha de Eliminación</label>
+                        <input type="date" class="form-control-pdf" id="fecha_eliminacion" name="fecha_eliminacion" placeholder="Seleccione la fecha de eliminación">
+                        <small class="form-text text-muted" style="font-size: 12px; color: #6B7280; margin-top: 4px;">Opcional: Fecha en que se eliminará automáticamente este PDF</small>
+                      </div>
+
                       <!-- Botón Guardar -->
                       <div class="form-group" style="display: flex; justify-content: flex-end; padding-top: 16px;">
                         <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">

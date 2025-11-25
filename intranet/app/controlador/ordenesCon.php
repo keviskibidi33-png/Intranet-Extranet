@@ -59,7 +59,14 @@ if(isset($_SESSION['id_geo'])){
 
 $mostrar_ordenes=$inicio->mostrar_ordenes();
 
-
+// Obtener información del cliente logueado para mostrar su razón social
+$razon_social = '';
+if (isset($_SESSION['id_geo']) && !empty($_SESSION['id_geo'])) {
+  $cliente_info = $inicio->consultas("SELECT razon_social FROM clientes WHERE id = '" . $_SESSION['id_geo'] . "'");
+  if (!empty($cliente_info) && isset($cliente_info[0]['razon_social'])) {
+    $razon_social = $cliente_info[0]['razon_social'];
+  }
+}
 
 require_once("app/vista/ordenes_2.phtml");
 

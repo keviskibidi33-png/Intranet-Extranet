@@ -32,7 +32,6 @@
 
 .login-body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-light);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -40,79 +39,129 @@
     padding: 0;
     color: var(--text-primary);
     overflow: hidden;
-}
-
-/* ============================================
-   CONTENEDOR PRINCIPAL - DOS PANELES
-   ============================================ */
-.login-container {
-    width: 100%;
-    max-width: 1200px;
-    height: 100vh;
-    display: flex;
-    background: var(--bg-white);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-}
-
-/* ============================================
-   PANEL IZQUIERDO - IMAGEN
-   ============================================ */
-.login-image-panel {
-    flex: 1;
     position: relative;
-    background: linear-gradient(135deg, #1E3A5F 0%, #2C5282 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    /* Imagen de fondo con overlay oscuro */
+    background-image: url('../../assets/geofoto%201%202.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.login-image-panel::before {
+/* Overlay oscuro sobre la imagen de fondo */
+.login-body::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    /* Imagen de fondo - se puede agregar una imagen real */
-    background: linear-gradient(135deg, rgba(30, 58, 95, 0.9) 0%, rgba(44, 82, 130, 0.9) 100%);
-    opacity: 0.3;
-    filter: blur(2px);
-    z-index: 1;
+    background: rgba(0, 0, 0, 0.5); /* Overlay oscuro al 50% */
+    z-index: 0;
 }
 
+/* ============================================
+   CONTENEDOR PRINCIPAL - DOS PANELES
+   ============================================ */
+.login-container {
+    width: 90%;
+    max-width: 1000px;
+    height: auto;
+    min-height: 600px;
+    max-height: 700px;
+    display: flex;
+    background: var(--bg-white);
+    gap: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    z-index: 1; /* Asegurar que el contenido esté por encima del overlay */
+    box-sizing: border-box;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    margin: auto;
+}
+
+/* ============================================
+   PANEL IZQUIERDO - CON IMAGEN DE CONSTRUCCIÓN
+   ============================================ */
+.login-image-panel {
+    flex: 0 0 45%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1E3A5F 0%, #2C5282 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 50px 35px;
+    border-radius: 0;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+/* Overlay oscuro sobre la imagen - ELIMINADO para mostrar la imagen sin filtro */
+
+/* Imagen de fondo en el panel izquierdo - se aplica desde el HTML inline style */
+/* Overlay eliminado para mostrar la imagen sin filtro */
+
+/* Contenido centrado directamente sobre la imagen */
 .login-image-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin: auto 0;
     text-align: center;
-    color: white;
-    padding: 40px;
 }
 
-.login-image-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+.login-building-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    opacity: 1;
+    display: block;
+    color: white;
+    font-weight: 300;
+}
+
+.login-image-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: white;
+    line-height: 1.4;
+}
+
+.login-image-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+    color: white;
+    line-height: 1.5;
+    font-weight: 400;
 }
 
 /* Iconos de redes sociales en la parte inferior */
 .login-social-icons {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    z-index: 3;
     display: flex;
     gap: 15px;
-    z-index: 2;
+    margin-top: auto;
+    padding-top: 20px;
 }
 
 .login-social-icons a {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -120,6 +169,7 @@
     text-decoration: none;
     transition: var(--transition);
     backdrop-filter: blur(10px);
+    font-size: 18px;
 }
 
 .login-social-icons a:hover {
@@ -131,30 +181,34 @@
    PANEL DERECHO - FORMULARIO
    ============================================ */
 .login-form-panel {
-    flex: 1;
+    flex: 0 0 55%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 60px 50px;
+    padding: 50px 40px;
     background: var(--bg-white);
     overflow-y: auto;
+    border-radius: 0;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
 
 /* Logo y Branding */
 .login-branding {
-    text-align: center;
-    margin-bottom: 40px;
+    text-align: left;
+    margin-bottom: 30px;
 }
 
 .login-logo-container {
     display: inline-block;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .login-logo-img {
-    max-width: 120px;
+    max-width: 140px;
     height: auto;
     background: transparent !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
 }
 
 .login-tagline {
@@ -165,17 +219,17 @@
 }
 
 .login-title {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 30px;
-    text-align: center;
+    margin-bottom: 28px;
+    text-align: left;
 }
 
 /* Formulario */
 .login-form {
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
     width: 100%;
 }
 

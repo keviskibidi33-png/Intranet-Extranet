@@ -1,0 +1,193 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="es">
+<!--<![endif]-->
+
+<head>
+  <?php include("head.php"); ?>
+  <link rel="stylesheet" href="<?php echo ruta ?>app/css/geofal-redesign.css">
+</head>
+
+<body>
+  <!-- Left Panel -->
+  <?php include("header_left.php"); ?>
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    <?php include("header_top.php"); ?>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+      <div class="col-sm-12">
+        <h1>Gestión de PDFs Próximos a Vencer</h1>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <!-- Información Resumen -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row text-center">
+                <div class="col-md-3">
+                  <div class="stat-box stat-urgent">
+                    <i class="fa fa-exclamation-circle"></i>
+                    <h3><?php echo count(array_filter($pdfs_procesados, function($p) { return $p['urgencia'] == 'vencido' || $p['urgencia'] == 'hoy'; })); ?></h3>
+                    <p>Urgentes (Hoy/Mañana)</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="stat-box stat-warning">
+                    <i class="fa fa-clock-o"></i>
+                    <h3><?php echo count(array_filter($pdfs_procesados, function($p) { return $p['urgencia'] == 'corto'; })); ?></h3>
+                    <p>Próximos 3 días</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="stat-box stat-info">
+                    <i class="fa fa-calendar"></i>
+                    <h3><?php echo count(array_filter($pdfs_procesados, function($p) { return $p['urgencia'] == 'medio'; })); ?></h3>
+                    <p>Próximos 7 días</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="stat-box stat-success">
+                    <i class="fa fa-check-circle"></i>
+                    <h3><?php echo count(array_filter($pdfs_procesados, function($p) { return $p['urgencia'] == 'normal'; })); ?></h3>
+                    <p>Más de 7 días</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabla de PDFs -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-pdfs-vencer">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Urgencia</th>
+                      <th>Título</th>
+                      <th>Empresa</th>
+                      <th>RUC</th>
+                      <th style="width: 150px;">Fecha Subida</th>
+                      <th style="width: 150px;">Fecha Expiración</th>
+                      <th style="width: 120px;">Días Restantes</th>
+                      <th style="width: 100px;">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if (empty($pdfs_procesados)): ?>
+                      <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--gray-500);">
+                          <i class="fa fa-info-circle" style="font-size: 48px; margin-bottom: 15px; display: block; color: var(--gray-400);"></i>
+                          No hay PDFs con fecha de eliminación programada
+                        </td>
+                      </tr>
+                    <?php else: ?>
+                      <?php foreach ($pdfs_procesados as $pdf): ?>
+                        <tr class="pdf-row-<?php echo $pdf['clase_urgencia']; ?>">
+                          <td style="text-align: center; vertical-align: middle;">
+                            <?php if ($pdf['urgencia'] == 'vencido'): ?>
+                              <span class="badge-urgencia badge-vencido" title="Vencido">
+                                <i class="fa fa-times-circle"></i>
+                              </span>
+                            <?php elseif ($pdf['urgencia'] == 'hoy'): ?>
+                              <span class="badge-urgencia badge-urgent" title="Urgente - Hoy/Mañana">
+                                <i class="fa fa-exclamation-circle"></i>
+                              </span>
+                            <?php elseif ($pdf['urgencia'] == 'corto'): ?>
+                              <span class="badge-urgencia badge-warning" title="Advertencia - Próximos 3 días">
+                                <i class="fa fa-clock-o"></i>
+                              </span>
+                            <?php elseif ($pdf['urgencia'] == 'medio'): ?>
+                              <span class="badge-urgencia badge-info" title="Información - Próximos 7 días">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            <?php else: ?>
+                              <span class="badge-urgencia badge-success" title="Normal - Más de 7 días">
+                                <i class="fa fa-check-circle"></i>
+                              </span>
+                            <?php endif; ?>
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <strong><?php echo htmlspecialchars($pdf['titulo']); ?></strong>
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <?php echo htmlspecialchars($pdf['razon_social']); ?>
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <code><?php echo htmlspecialchars($pdf['ruc']); ?></code>
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <?php if ($pdf['fecha_subida']): ?>
+                              <div class="fecha-info">
+                                <i class="fa fa-upload" style="color: var(--primary-blue); margin-right: 5px;"></i>
+                                <strong><?php echo date('d/m/Y', strtotime($pdf['fecha_subida'])); ?></strong>
+                                <br>
+                                <small style="color: var(--gray-500);"><?php echo date('H:i', strtotime($pdf['fecha_subida'])); ?></small>
+                              </div>
+                            <?php else: ?>
+                              <span style="color: var(--gray-400);">N/A</span>
+                            <?php endif; ?>
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <div class="fecha-info">
+                              <i class="fa fa-calendar-times-o" style="color: var(--geofal-orange); margin-right: 5px;"></i>
+                              <strong><?php echo date('d/m/Y', strtotime($pdf['fecha_eliminacion'])); ?></strong>
+                            </div>
+                          </td>
+                          <td style="text-align: center; vertical-align: middle;">
+                            <?php 
+                            if ($pdf['dias_restantes'] < 0): 
+                              $dias_texto = 'VENCIDO';
+                              $badge_class = 'badge-vencido';
+                            elseif ($pdf['dias_restantes'] == 0): 
+                              $dias_texto = 'HOY';
+                              $badge_class = 'badge-urgent';
+                            elseif ($pdf['dias_restantes'] == 1): 
+                              $dias_texto = 'MAÑANA';
+                              $badge_class = 'badge-urgent';
+                            else: 
+                              $dias_texto = $pdf['dias_restantes'] . ' días';
+                              $badge_class = 'badge-' . $pdf['clase_urgencia'];
+                            endif;
+                            ?>
+                            <span class="badge-dias <?php echo $badge_class; ?>">
+                              <?php echo $dias_texto; ?>
+                            </span>
+                          </td>
+                          <td style="text-align: center; vertical-align: middle;">
+                            <div class="btn-group-actions">
+                              <a href="<?= ruta ?>?pagina=pdf&id=<?php echo $pdf['id_user']; ?>" class="btn btn-outline-primary btn-sm" title="Ver PDFs del Cliente">
+                                <i class="fa fa-eye"></i>
+                              </a>
+                              <a href="<?= ruta ?>?pagina=pdf_editar&id=<?php echo $pdf['id']; ?>" class="btn btn-outline-info btn-sm" title="Editar PDF">
+                                <i class="fa fa-pencil"></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php include("footer.php"); ?>
+</body>
+</html>
+

@@ -1,9 +1,5 @@
 function visto(ruta, id) {
 
- 
-
-
-
   var datos = {
 
     id: id,
@@ -26,13 +22,20 @@ function visto(ruta, id) {
 
     success: function (data) {
 
-     
-
+      // Actualizar el icono usando Font Awesome en lugar de imagen
       $("#vista_ok" + id).html(
 
-        '<img src="' + ruta + 'admin/publico/img/check.png" width="30">'
+        '<i class="fa fa-check-circle" style="color: #28a745; font-size: 24px; display: inline-block; font-style: normal; font-variant: normal; text-rendering: auto; -webkit-font-smoothing: antialiased;" aria-hidden="true" title="Visto"></i>'
 
       );
+      
+      // También actualizar el estado a "Descargado" si no estaba ya
+      var estadoElement = $("#estado_ok" + id);
+      if (estadoElement.find('.badge').length > 0) {
+        estadoElement.html(
+          '<span class="badge" style="background-color: #28a745; color: #fff; padding: 6px 12px; border-radius: 4px; font-weight: 600; display: inline-block;">Descargado</span>'
+        );
+      }
 
     },
 

@@ -76,24 +76,43 @@
   </div>
 
   <div class="col-sm-5">
-    <div class="user-area dropdown float-right">
-      <!-- Notificaciones -->
-      <a href="#" class="notification-icon">
-        <i class="fa fa-bell"></i>
-      </a>
-
-      <!-- Avatar y Nombre -->
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <div class="user-avatar-container">
-          <div class="user-avatar-circle">A</div>
-          <span class="user-name-header">Administrador</span>
-          <i class="fa fa-chevron-down user-dropdown-arrow"></i>
+    <div class="user-area float-right">
+      <!-- Notificaciones - Dropdown independiente -->
+      <div class="dropdown for-notification" style="display: inline-block; margin-right: 16px;">
+        <a href="#" class="notification-icon dropdown-toggle" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+          <i class="fa fa-bell"></i>
+          <span class="notification-count" id="notificationCount" style="display: none;">0</span>
+        </a>
+        <div class="dropdown-menu notification-dropdown" aria-labelledby="notificationDropdown" id="notificationDropdownMenu">
+          <div class="notification-header">
+            <p class="notification-title">Notificaciones</p>
+            <span class="notification-subtitle" id="notificationSubtitle">Cargando...</span>
+          </div>
+          <div class="notification-list" id="notificationList">
+            <div class="notification-loading">
+              <i class="fa fa-spinner fa-spin"></i> Cargando notificaciones...
+            </div>
+          </div>
+          <div class="notification-footer" id="notificationFooter" style="display: none;">
+            <a href="<?php echo ruta ?>?pagina=pdf_vencer" class="notification-view-all">Ver todas las notificaciones</a>
+          </div>
         </div>
-      </a>
+      </div>
 
-      <div class="user-menu dropdown-menu shadow">
-        <a class="nav-link" href="<?=ruta?>perfil"><i class="fa fa-cog"></i> Perfil</a>
-        <a class="nav-link" href="<?=ruta?>salir"><i class="fa fa-power-off"></i> Salir</a>
+      <!-- Avatar y Nombre - Dropdown independiente -->
+      <div class="dropdown" style="display: inline-block;">
+        <a href="#" class="dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+          <div class="user-avatar-container">
+            <div class="user-avatar-circle">A</div>
+            <span class="user-name-header">Administrador</span>
+            <i class="fa fa-chevron-down user-dropdown-arrow"></i>
+          </div>
+        </a>
+
+        <div class="user-menu dropdown-menu shadow" aria-labelledby="userDropdown">
+          <a class="nav-link" href="<?=ruta?>perfil"><i class="fa fa-cog"></i> Perfil</a>
+          <a class="nav-link" href="<?=ruta?>salir"><i class="fa fa-power-off"></i> Salir</a>
+        </div>
       </div>
     </div>
   </div>

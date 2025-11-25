@@ -29,6 +29,13 @@
             <span>Perfiles</span>
           </a>
         </li>
+
+        <li class="menu-item <?php echo (isset($_GET['pagina']) && $_GET['pagina'] == 'pdf_vencer') ? 'active' : ''; ?>">
+          <a href="<?= ruta ?>?pagina=pdf_vencer">
+            <i class="menu-icon fa fa-calendar-times-o"></i>
+            <span>PDFs por Vencer</span>
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
