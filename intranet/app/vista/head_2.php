@@ -30,6 +30,8 @@
 
 <title>GEOFAL - Estudio de suelos, Laboratorio de suelos, concreto y pavimento</title>
 
+<!-- Favicon Geofal SVG -->
+<link rel="icon" type="image/svg+xml" href="<?= ruta ?>admin/assets/Logo_Geofal_favicon.svg">
 <link rel="icon" type="image/png" href="<?= ruta ?>admin/publico/img/logo.png" />
 
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -66,7 +68,7 @@
 
 
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 

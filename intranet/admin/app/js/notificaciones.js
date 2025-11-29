@@ -420,6 +420,9 @@
         'Se elimina ' + diasTexto + ' (' + notif.fecha_eliminacion + ')' +
         '</div>' +
         '</div>' +
+        '<button class="notification-close-btn" type="button" aria-label="Cerrar notificación" title="Cerrar notificación">' +
+        '<i class="fa fa-times"></i>' +
+        '</button>' +
         '</a>' +
         '</div>';
 
@@ -428,6 +431,13 @@
       
       // Inicializar swipe
       inicializarSwipe($notifElement.find('.notification-item'), notif.id, urgenciaType);
+      
+      // Agregar evento click al botón de cerrar (desktop)
+      $notifElement.find('.notification-close-btn').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        ocultarNotificacionPorSwipe($notifElement, notif.id, urgenciaType);
+      });
     });
 
     $notificationFooter.show();

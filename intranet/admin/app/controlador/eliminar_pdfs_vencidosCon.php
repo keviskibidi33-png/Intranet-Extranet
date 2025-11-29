@@ -10,12 +10,25 @@
  * ?pagina=eliminar_pdfs_vencidos
  */
 
-// Asegurar que sistema.php esté incluido
+// IMPORTANTE: Cargar config.php PRIMERO para definir constantes (USER, PASSWORD, etc.)
+$rutasConfig = [
+    __DIR__ . '/../../config/config.php',  // Desde controlador: intranet/admin/config/config.php
+    dirname(dirname(__DIR__)) . '/config/config.php' // Ruta absoluta relativa
+];
+
+foreach ($rutasConfig as $ruta) {
+    if (file_exists($ruta)) {
+        require_once($ruta);
+        break;
+    }
+}
+
+// Ahora cargar sistema.php (que necesita las constantes de config.php)
 if (!class_exists('Conectar')) {
     $rutasSistema = [
-        __DIR__ . '/../../config/sistema.php',
-        'config/sistema.php',
-        '../config/sistema.php'
+        __DIR__ . '/../../config/sistema.php',  // Desde controlador: intranet/admin/config/sistema.php
+        __DIR__ . '/../../../config/sistema.php', // Desde controlador: intranet/config/sistema.php (fallback)
+        dirname(dirname(__DIR__)) . '/config/sistema.php' // Ruta absoluta relativa
     ];
     
     foreach ($rutasSistema as $ruta) {
@@ -26,7 +39,24 @@ if (!class_exists('Conectar')) {
     }
 }
 
-include("app/modelo/inicioModelo.php");
+// Incluir modelo con ruta absoluta
+$rutaModelo = __DIR__ . '/../modelo/inicioModelo.php';
+if (file_exists($rutaModelo)) {
+    require_once($rutaModelo);
+} else {
+    // Fallback: buscar en otras ubicaciones posibles
+    $rutasModelo = [
+        dirname(__DIR__) . '/modelo/inicioModelo.php',
+        'app/modelo/inicioModelo.php'
+    ];
+    foreach ($rutasModelo as $ruta) {
+        if (file_exists($ruta)) {
+            require_once($ruta);
+            break;
+        }
+    }
+}
+
 $inicio = new Inicio();
 
 // Si se ejecuta desde navegador, verificar sesión
@@ -65,6 +95,8 @@ foreach ($pdfs_vencidos as $pdf) {
         $inicio->deleteRow("DELETE FROM pdf WHERE id = ?", [$pdf['id']]);
         
         // Intentar eliminar el archivo físico
+        // Desde: intranet/admin/app/controlador/
+        // Subir 3 niveles: intranet/
         $base_dir = dirname(dirname(dirname(__DIR__))); // intranet/
         $file_path = $base_dir . '/publico/img_data/' . $pdf_filename;
         
@@ -74,10 +106,20 @@ foreach ($pdfs_vencidos as $pdf) {
             }
         }
         
-        // También buscar en ubicación antigua
+        // También buscar en ubicación antigua (por compatibilidad)
         $file_path_old = dirname($base_dir) . '/publico/img_data/' . $pdf_filename;
         if (file_exists($file_path_old)) {
-            @unlink($file_path_old);
+            if (@unlink($file_path_old)) {
+                $archivos_eliminados++;
+            }
+        }
+        
+        // Buscar también en ruta absoluta desde raíz del proyecto
+        $file_path_abs = dirname($base_dir) . '/intranet/publico/img_data/' . $pdf_filename;
+        if (file_exists($file_path_abs)) {
+            if (@unlink($file_path_abs)) {
+                $archivos_eliminados++;
+            }
         }
         
         $eliminados[] = [

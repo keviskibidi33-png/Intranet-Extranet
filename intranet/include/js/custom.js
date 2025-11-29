@@ -375,22 +375,8 @@ POTENZA.countdownTimer = function () {
 })(jQuery);
 
 // Below code is not part of template
-// COMENTADO: Esta petición causa error de contenido mixto (HTTPS cargando HTTP)
-// Solo descomentar si se necesita en producción y se cambia a HTTPS
-/*
-$( document ).ready(function() {    
-  $.ajax({
-    url: 'https://themes.potenzaglobalsolutions.com/top-bar-section.php',
-    type: 'post',
-    //dataType: 'json',     
-    data:'action=pgs_top_bar&theme=constro',
-    success: function(response){
-      $('body').prepend(response);        
-    },
-    
-  });        
-});
-*/
+// ELIMINADO: Esta petición causaba error de contenido mixto (HTTPS cargando HTTP)
+// El código fue completamente removido para evitar problemas en producción
 $(document).on('click','a.frame-close', function(e){
   $('.header-preview').slideUp(); 
 });

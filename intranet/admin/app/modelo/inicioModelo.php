@@ -77,9 +77,19 @@ class Inicio extends Conectar
     }
 
     // Insertar en base de datos
-    // Preparar fecha_eliminacion (puede ser NULL)
-    $fecha_eliminacion = !empty($_POST['fecha_eliminacion']) ? $_POST['fecha_eliminacion'] : null;
+    // Preparar fecha_eliminacion
     $fecha_subida = date('Y-m-d H:i:s'); // Fecha y hora actual
+    
+    // Si el admin estableció una fecha manualmente, usarla
+    // Si no, calcular automáticamente: fecha_subida + 2 meses
+    if (!empty($_POST['fecha_eliminacion'])) {
+        $fecha_eliminacion = $_POST['fecha_eliminacion'];
+    } else {
+        // Calcular automáticamente: fecha_subida + 2 meses
+        $fecha_eliminacion_obj = new DateTime($fecha_subida);
+        $fecha_eliminacion_obj->modify('+2 months');
+        $fecha_eliminacion = $fecha_eliminacion_obj->format('Y-m-d');
+    }
     
     // Intentar insertar con fecha_subida, si el campo no existe, se omitirá
     try {
@@ -167,8 +177,21 @@ class Inicio extends Conectar
       $img1 = $sql[0]['pdf'];
     }
 
-    // Preparar fecha_eliminacion (puede ser NULL)
-    $fecha_eliminacion = !empty($_POST['fecha_eliminacion']) ? $_POST['fecha_eliminacion'] : null;
+    // Preparar fecha_eliminacion
+    // Si el admin estableció una fecha manualmente, usarla
+    // Si no, calcular automáticamente: fecha_subida + 2 meses
+    if (!empty($_POST['fecha_eliminacion'])) {
+        $fecha_eliminacion = $_POST['fecha_eliminacion'];
+    } else {
+        // Obtener fecha_subida del PDF actual
+        $fecha_subida_actual = isset($sql[0]['fecha_subida']) && !empty($sql[0]['fecha_subida']) 
+            ? $sql[0]['fecha_subida'] 
+            : date('Y-m-d H:i:s');
+        // Calcular automáticamente: fecha_subida + 2 meses
+        $fecha_eliminacion_obj = new DateTime($fecha_subida_actual);
+        $fecha_eliminacion_obj->modify('+2 months');
+        $fecha_eliminacion = $fecha_eliminacion_obj->format('Y-m-d');
+    }
 
     $stmt = $this->datab->prepare("UPDATE pdf set 
 		pdf=?,

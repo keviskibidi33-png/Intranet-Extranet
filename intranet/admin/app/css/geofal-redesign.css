@@ -2266,6 +2266,53 @@ label {
   min-width: 0;
 }
 
+/* Botón de cerrar (solo visible en desktop) */
+.notification-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: none; /* Oculto por defecto, visible solo en desktop */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.notification-close-btn:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+.notification-close-btn:active {
+  transform: scale(0.95);
+}
+
+.notification-close-btn i {
+  font-size: 12px;
+}
+
+/* Mostrar botón de cerrar solo en desktop */
+@media (min-width: 768px) {
+  .notification-close-btn {
+    display: flex;
+  }
+  
+  /* Ajustar padding del contenido para que no se solape con el botón */
+  .notification-item {
+    padding-right: 40px;
+  }
+}
+
 .notification-item-title {
   font-size: 14px;
   font-weight: 600;

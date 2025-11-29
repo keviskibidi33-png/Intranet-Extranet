@@ -5,8 +5,13 @@
 // Detectar automáticamente el protocolo (HTTP o HTTPS)
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
 
-define('ruta', $protocol . '://' . $_SERVER["HTTP_HOST"] . '/intranet/admin/');
-define('ruta0', $protocol . '://' . $_SERVER["HTTP_HOST"] . '/');
+// Limpiar HTTP_HOST para remover public_html si está presente
+$host = $_SERVER["HTTP_HOST"];
+$host = str_replace('/public_html', '', $host);
+$host = rtrim($host, '/');
+
+define('ruta', $protocol . '://' . $host . '/intranet/admin/');
+define('ruta0', $protocol . '://' . $host . '/');
 
 define('HOST', 'localhost');
 
